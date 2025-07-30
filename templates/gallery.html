@@ -1,0 +1,13 @@
+<!-- templates/gallery.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Photo Gallery</title>
+</head>
+<body>
+    <h1>My Cloud Photo Gallery</h1>
+    {% for photo_url in photos %}
+        <img src="{{ photo_url }}" style="width:300px; margin:10px;">
+    {% endfor %}
+</body>
+</html>
