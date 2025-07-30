@@ -14,9 +14,9 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    # 获取 Cloudinary 中 "photowebsite/" 文件夹下的所有图片
-    resources = cloudinary.api.resources(type="upload", prefix="photowebsite/", max_results=30)
-    image_urls = [img['secure_url'] for img in resources['resources']]
+    image_urls = [
+        "https://res.cloudinary.com/dpr0pl2tf/image/upload/v1753816843/WechatIMG2_mzsnw2.jpg",
+    ]
     return render_template('index.html', image_urls=image_urls)
 
 
