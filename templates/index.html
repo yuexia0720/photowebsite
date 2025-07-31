@@ -1,13 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>My Photo Gallery</title>
-</head>
-<body>
-    <h1>My Photo Gallery</h1>
-    {% for url in image_urls %}
-        <img src="{{ url }}" alt="Photo" width="300">
-    {% endfor %}
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}My Lens{% endblock %}
+
+{% block content %}
+    <img class="cover-image" src="https://res.cloudinary.com/dpr0pl2tf/image/upload/v1753816843/WechatIMG2_mzsnw2.jpg" alt="Cover Photo">
+    <h1>My Lens</h1>
+{% endblock %}
+
 
