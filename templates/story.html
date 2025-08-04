@@ -1,37 +1,29 @@
 {% extends "base.html" %}
-
 {% block title %}Story{% endblock %}
 
 {% block content %}
-<h2>Photo Stories</h2>
+    <h2>Share Your Story</h2>
+    <form action="/story" method="post" enctype="multipart/form-data">
+        <div>
+            <label for="description">Your Story:</label><br>
+            <textarea name="description" rows="4" cols="50" required></textarea>
+        </div>
+        <div>
+            <label for="photo">Upload Photo:</label>
+            <input type="file" name="photo" accept="image/*" required>
+        </div>
+        <button type="submit">Submit</button>
+    </form>
 
-<!-- 显示已有故事 -->
-{% if stories %}
+    <hr>
+
+    <h3>Stories:</h3>
     {% for story in stories %}
-        <div style="border:1px solid #ccc; margin-bottom:20px; padding:10px;">
-            {% if story.image_url %}
-                <img src="{{ story.image_url }}" style="max-width:400px;">
-            {% endif %}
-            <p>{{ story.text }}</p>
+        <div style="margin-bottom: 30px;">
+            <img src="{{ story.image_url }}" alt="Story Image" width="400"><br>
+            <p>{{ story.description }}</p>
         </div>
     {% endfor %}
-{% else %}
-    <p>No stories yet.</p>
-{% endif %}
-
-<hr>
-
-<!-- 上传表单 -->
-<h3>Submit Your Story</h3>
-<form method="POST" enctype="multipart/form-data" action="{{ url_for('story') }}">
-    <label for="text">Write your story:</label><br>
-    <textarea name="text" id="text" rows="5" cols="50" required></textarea><br><br>
-
-    <label for="image">Upload an image:</label><br>
-    <input type="file" name="image" id="image" accept="image/*" required><br><br>
-
-    <button type="submit">Submit Story</button>
-</form>
-
 {% endblock %}
+
 
