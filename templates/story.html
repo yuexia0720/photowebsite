@@ -3,7 +3,35 @@
 {% block title %}Story{% endblock %}
 
 {% block content %}
-    <h2>Photo Stories</h2>
-    <img src="https://res.cloudinary.com/dpr0pl2tf/image/upload/v1753816843/WechatIMG2_mzsnw2.jpg" width="400">
-    <p>This was taken during a quiet morning walk in the mountains. The sun had just risen, and everything was bathed in soft golden light.</p>
+<h2>Photo Stories</h2>
+
+<!-- 显示已有故事 -->
+{% if stories %}
+    {% for story in stories %}
+        <div style="border:1px solid #ccc; margin-bottom:20px; padding:10px;">
+            {% if story.image_url %}
+                <img src="{{ story.image_url }}" style="max-width:400px;">
+            {% endif %}
+            <p>{{ story.text }}</p>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>No stories yet.</p>
+{% endif %}
+
+<hr>
+
+<!-- 上传表单 -->
+<h3>Submit Your Story</h3>
+<form method="POST" enctype="multipart/form-data" action="{{ url_for('story') }}">
+    <label for="text">Write your story:</label><br>
+    <textarea name="text" id="text" rows="5" cols="50" required></textarea><br><br>
+
+    <label for="image">Upload an image:</label><br>
+    <input type="file" name="image" id="image" accept="image/*" required><br><br>
+
+    <button type="submit">Submit Story</button>
+</form>
+
 {% endblock %}
+
