@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}{{ album_name }}{% endblock %}
+
+{% block content %}
+    <h2>{{ album_name }}</h2>
+
+    {% if image_urls %}
+        {% for url in image_urls %}
+            <img src="{{ url }}" width="300" style="margin: 10px;">
+        {% endfor %}
+    {% else %}
+        <p>No images uploaded yet in this album.</p>
+    {% endif %}
+{% endblock %}
