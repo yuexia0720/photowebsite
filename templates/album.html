@@ -5,16 +5,26 @@
 {% block content %}
 <h1>Photo Albums</h1>
 
+<!-- 展示现有文件夹 -->
 <div class="album-grid">
+    {% for folder in folders %}
     <div class="album-card">
-        <a href="{{ url_for('pittsburgh') }}">
-            <h2>Pittsburgh + Cook Forest</h2>
+        <a href="{{ url_for('view_album', folder_name=folder) }}">
+            <h2>{{ folder.replace('_', ' ') }}</h2>
         </a>
     </div>
+    {% endfor %}
 </div>
 
-<div class="upload-section">
-    <a href="{{ url_for('upload') }}" class="upload-button">＋ Upload New Photo</a>
-</div>
+<hr>
+
+<!-- 创建新文件夹 + 上传图片 -->
+<h2>Create New Album</h2>
+<form action="{{ url_for('upload_photo') }}" method="POST" enctype="multipart/form-data">
+    <input type="text" name="folder_name" placeholder="Enter album name" required>
+    <input type="file" name="photo" accept="image/*" required>
+    <button type="submit">Upload</button>
+</form>
 {% endblock %}
+
 
