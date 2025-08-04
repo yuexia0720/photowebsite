@@ -25,3 +25,16 @@ nav a:hover {
     max-height: 500px;
     object-fit: cover;
 }
+.hero {
+    background-image: url('https://res.cloudinary.com/dpr0pl2tf/image/upload/v1753816843/WechatIMG2_mzsnw2.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 48px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
