@@ -1,22 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>My Lens</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <nav>
-        <a href="/">Home</a>
-        <a href="/about">About</a>
-        <a href="/album">Album</a>
-        <a href="/story">Story</a>
-    </nav>
+{% extends "base.html" %}
 
-    <div class="hero">
-        <h1>My Lens</h1>
-    </div>
-</body>
-</html>
+{% block title %}My Lens{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h1>My Lens</h1>
+</div>
+{% endblock %}
 
 
 
