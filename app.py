@@ -32,13 +32,13 @@ def about():
 
 @app.route("/album")
 def album():
-    albums = {}
+    folders = []
     for folder_name in os.listdir(UPLOAD_FOLDER):
         folder_path = os.path.join(UPLOAD_FOLDER, folder_name)
         if os.path.isdir(folder_path):
-            image_urls = [f"/{UPLOAD_FOLDER}/{folder_name}/{file}" for file in os.listdir(folder_path) if file.lower().endswith((".png", ".jpg", ".jpeg", ".gif"))]
-            albums[folder_name] = image_urls
-    return render_template("album.html", albums=albums)
+            folders.append(folder_name)
+    return render_template("album.html", folders=folders)
+
 
 @app.route("/story")
 def story():
