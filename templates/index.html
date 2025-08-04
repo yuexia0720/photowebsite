@@ -1,10 +1,25 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Lens</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
 
-{% block title %}My Lens{% endblock %}
+    <nav class="navbar">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/album">Album</a></li>
+            <li><a href="/story">Story</a></li>
+        </ul>
+    </nav>
 
-{% block content %}
-    <img class="cover-image" src="https://res.cloudinary.com/dpr0pl2tf/image/upload/v1753816843/WechatIMG2_mzsnw2.jpg" alt="Cover Photo">
-    <h1>My Lens</h1>
-{% endblock %}
+    <div class="hero">
+        <h1>My Lens</h1>
+    </div>
+
+</body>
+</html>
 
 
