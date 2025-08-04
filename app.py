@@ -22,7 +22,7 @@ def album():
     for folder_name in os.listdir(UPLOAD_FOLDER):
         folder_path = os.path.join(UPLOAD_FOLDER, folder_name)
         if os.path.isdir(folder_path):
-            image_urls = [f"/{UPLOAD_FOLDER}/{folder_name}/{file}" for file in os.listdir(folder_path)]
+            image_urls = [f"/{UPLOAD_FOLDER}/{folder_name}/{file}"for file in os.listdir(folder_path)if file.lower().endswith((".png", ".jpg", ".jpeg", ".gif"))
             albums[folder_name] = image_urls
     return render_template("album.html", albums=albums)
 
@@ -51,9 +51,6 @@ def upload():
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
-if __name__ == "__main__":
-    app.run(debug=True)
-
 @app.route("/album/<album_name>")
 def view_album(album_name):
     album_path = os.path.join(UPLOAD_FOLDER, album_name)
@@ -66,6 +63,8 @@ def view_album(album_name):
     else:
         return "Album not found", 404
 
+if __name__ == "__main__":
+    app.run(debug=True)
 
 
 
