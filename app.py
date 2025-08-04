@@ -37,6 +37,23 @@ def upload():
         folder_path = os.path.join(app.config['UPLOAD_FOLDER'], folder)
         os.makedirs(folder_path, exist_ok=True)
 
+        files = request.files.getlist('photos')
+        for file in files:
+            if file.filename:
+                file.save(os.path.join(folder_path, file.filename))
+
+        return redirect(url_for('album'))
+
+    return render_template("upload.html")
+
+# 提供静态图片文件服务
+@app.route('/static/uploads/<path:filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
 @app.route("/album/<album_name>")
 def view_album(album_name):
     album_path = os.path.join(UPLOAD_FOLDER, album_name)
@@ -49,7 +66,6 @@ def view_album(album_name):
     else:
         return "Album not found", 404
 
-        files = request.files.getlist('photos')
 
 
 
