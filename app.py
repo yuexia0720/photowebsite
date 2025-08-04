@@ -37,6 +37,18 @@ def upload():
         folder_path = os.path.join(app.config['UPLOAD_FOLDER'], folder)
         os.makedirs(folder_path, exist_ok=True)
 
+@app.route("/album/<album_name>")
+def view_album(album_name):
+    album_path = os.path.join(UPLOAD_FOLDER, album_name)
+    if os.path.exists(album_path):
+        image_urls = []
+        for filename in os.listdir(album_path):
+            if filename.lower().endswith((".png", ".jpg", ".jpeg", ".gif")):
+                image_urls.append(f"/{UPLOAD_FOLDER}/{album_name}/{filename}")
+        return render_template("album_view.html", album_name=album_name, image_urls=image_urls)
+    else:
+        return "Album not found", 404
+
         files = request.files.getlist('photos')
 
 
