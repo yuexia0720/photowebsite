@@ -16,25 +16,31 @@ cloudinary.config(
 # 首页
 @app.route('/')
 def index():
-    return render_template('index.html')
+    main_image_url = "https://res.cloudinary.com/dpr0pl2tf/image/upload/v1754343393/pexels-caio-69969_aq5kzz.jpg"
+    return render_template('index.html', main_image_url=main_image_url)
 
 @app.route('/about')
 def about():
-    return render_template('about.html')
+    about_image_url = "https://res.cloudinary.com/dpr0pl2tf/image/upload/v1754343392/pexels-samuel-walker-15032-569098_wm1kxg.jpg"
+    return render_template('about.html', about_image_url=about_image_url)
 
 # 存储所有故事
-stories = []
-
 @app.route('/story', methods=['GET', 'POST'])
 def story():
-    global stories
     if request.method == 'POST':
-        title = request.form.get('title')
-        content = request.form.get('content')
-        image_url = request.form.get('image_url')
-        stories.append({'title': title, 'content': content, 'image_url': image_url})
-        return redirect(url_for('story'))
-
+        image = request.files['image']
+        caption = request.form.get('caption')
+        result = cloudinary.uploader.upload(image, folder='story')
+        image_url = result['secure_url']
+        with open('story_data.txt', 'a') as f:
+            f.write(f"{image_url}|{caption}\n")
+    stories = []
+    if os.path.exists('story_data.txt'):
+        with open('story_data.txt', 'r') as f:
+            for line in f:
+                parts = line.strip().split('|')
+                if len(parts) == 2:
+                    stories.append({'url': parts[0], 'caption': parts[1]})
     return render_template('story.html', stories=stories)
 
 @app.route('/upload', methods=['GET', 'POST'])
