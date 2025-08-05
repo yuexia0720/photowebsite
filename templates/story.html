@@ -1,29 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Stories</title>
-</head>
-<body>
-    <h1>📖 Share a Story</h1>
-    <form method="post" enctype="multipart/form-data">
-        <label>Story Text:</label><br>
-        <textarea name="story_text" rows="4" cols="50" required></textarea><br><br>
-
-        <label>Photo:</label>
-        <input type="file" name="story_image" required><br><br>
-
-        <button type="submit">Post Story</button>
-    </form>
-
-    <h2>📚 Posted Stories</h2>
-    {% for story in stories %}
-        <img src="{{ story.image_url }}" style="width:300px;"><br>
-        <p>{{ story.text }}</p>
-        <hr>
-    {% endfor %}
-</body>
-</html>
-
+{% extends "base.html" %}
+{% block content %}
+<h2 style="text-align:center;">Stories</h2>
+<form action="{{ url_for('post_story') }}" method="POST" enctype="multipart/form-data" style="text-align:center;">
+    <input type="file" name="image" required><br><br>
+    <textarea name="caption" placeholder="Write your story here..." rows="4" cols="40" required></textarea><br><br>
+    <button type="submit">Post Story</button>
+</form>
+<hr>
+<div style="padding: 2em;">
+  {% for story in stories %}
+    <div style="margin-bottom: 2em;">
+        <img src="{{ story.url }}" style="width: 60%; border-radius: 10px;"><br>
+        <p>{{ story.caption }}</p>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}
 
 
 
