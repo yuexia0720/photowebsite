@@ -5,23 +5,19 @@
 </head>
 <body>
     <h1>Albums</h1>
-    {% if albums %}
-        <ul>
-        {% for name, cover_url in albums.items() %}
-            <li>
-                <a href="{{ url_for('view_album', album_name=name) }}">
-                    <img src="{{ cover_url }}" alt="{{ name }}" width="200"><br>
-                    {{ name }}
-                </a>
-            </li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>No albums found.</p>
-    {% endif %}
-    <p><a href="{{ url_for('upload') }}">Upload New Photo</a></p>
+    {% for album in albums %}
+        <div>
+            {% if album.cover_url %}
+                <img src="{{ album.cover_url }}" alt="Cover" width="200">
+            {% else %}
+                <p>[No cover image]</p>
+            {% endif %}
+            <p><a href="{{ url_for('view_album', album_name=album.name) }}">{{ album.name }}</a></p>
+        </div>
+    {% endfor %}
 </body>
 </html>
+
 
 
 
