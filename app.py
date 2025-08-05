@@ -7,7 +7,7 @@ import cloudinary.api
 app = Flask(__name__)
 
 # --------------------------
-# 第二步：Cloudinary 设置
+# Cloudinary 设置
 # --------------------------
 cloudinary.config(
     cloud_name="dpr0pl2tf",
@@ -15,9 +15,7 @@ cloudinary.config(
     api_secret="9o-PlPBRQzQPfuVCQfaGrUV3_IE"
 )
 
-# --------------------------
-# 原有配置
-# --------------------------
+# 本地上传文件夹
 UPLOAD_FOLDER = 'static/uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -39,14 +37,18 @@ def album():
             folders.append(folder_name)
     return render_template("album.html", folders=folders)
 
+@app.route("/album/<album_name>")
+def view_album(album_name):
+    album_path = os.path.join(UPLOAD_FOLDER, album_name)
+    if os.path.exists(album_path):
+        image_urls = []
+        for filename in os.listdir(album_path):
+            if filename.lower().endswith((".png", ".jpg", ".jpeg", ".gif")):
+                image_urls.append(f"/{UPLOAD_FOLDER}/{album_name}/{filename}")
+        return render_template("album_view.html", album_name=album_name, image_urls=image_urls)
+    else:
+        return "Album not found", 404
 
-@app.route("/story")
-def story():
-    return render_template("story.html")
-
-# --------------------------------
-# 第三步：修改 /upload 路由支持 Cloudinary 上传
-# --------------------------------
 @app.route("/upload", methods=['GET', 'POST'])
 def upload():
     if request.method == 'POST':
@@ -55,25 +57,51 @@ def upload():
         files = request.files.getlist('photos')
         for file in files:
             if file.filename:
-                # 上传到 Cloudinary，并指定 folder
                 cloudinary.uploader.upload(file,
                                            folder=f"albums/{folder}",
                                            use_filename=True,
                                            unique_filename=False)
-
         return redirect(url_for('album'))
 
     return render_template("upload.html")
 
-# 原有：查看单个相册（暂时保留本地功能，如果后续迁移到 Cloudinary，可更新此逻辑）
-@app.route("/album/<album_name>")
-def view_album(album_name):
-    album_path = os.path.join(UPLOAD_FOLDER, album_name)
-    if os.path.exists(album_path):
-        image_urls = []
-        for filename in os.listdir(album_path):
-            if filename.lower().endswith((".png", ".jpg", ".jpeg", ".gif")):
-                image_urls.app_
+# ---- 新增 ----
+@app.route("/submit_story", methods=['POST'])
+def submit_story():
+    story_text = request.form.get('story')
+    photo = request.files.get('photo')
+
+    image_url = None
+
+    if photo and photo.filename:
+        result = cloudinary.uploader.upload(photo, folder="stories", use_filename=True, unique_filename=False)
+        image_url = result['secure_url']
+
+    if not os.path.exists("stories.txt"):
+        with open("stories.txt", "w") as f:
+            pass
+
+    with open("stories.txt", "a", encoding="utf-8") as f:
+        f.write(image_url + "||" + story_text.replace("\n", "\\n") + "\n")
+
+    return redirect(url_for('story'))
+
+@app.route("/story")
+def story():
+    stories = []
+    if os.path.exists("stories.txt"):
+        with open("stories.txt", "r", encoding="utf-8") as f:
+            for line in f:
+                parts = line.strip().split("||")
+                if len(parts) == 2:
+                    image_url = parts[0]
+                    story_text = parts[1].replace("\\n", "\n")
+                    stories.append({"image": image_url, "text": story_text})
+    return render_template("story.html", stories=stories)
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
 
 
 
