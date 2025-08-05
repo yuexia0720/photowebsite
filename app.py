@@ -31,7 +31,6 @@ def story():
         ]
         return render_template("story.html", stories=stories)
     except Exception as e:
-        import traceback
         traceback.print_exc()
         return f"Error rendering story page: {str(e)}"
 
@@ -46,7 +45,6 @@ def submit_story():
             upload_result = cloudinary.uploader.upload(photo, folder="stories")
             image_url = upload_result.get("secure_url")
 
-        # 假设将来你要存数据库，这里可以保存 text 和 image_url
         print("Story submitted:", story_text)
         print("Image URL:", image_url)
 
@@ -56,8 +54,7 @@ def submit_story():
         traceback.print_exc()
         return f"Error submitting story: {str(e)}"
 
-
-# 上传页面（支持上传到 Cloudinary）
+# 上传页面
 @app.route("/upload", methods=["GET", "POST"])
 def upload():
     if request.method == "POST":
@@ -68,57 +65,33 @@ def upload():
             return "Missing photo or folder", 400
 
         try:
-            upload_result = cloudinary.uploader.upload(
+            cloudinary.uploader.upload(
                 photo,
                 folder=f"albums/{folder}"
             )
-            return redirect(url_for("album"))
+            return redirect(url_for("albums"))
         except Exception as e:
             traceback.print_exc()
             return f"Error uploading photo: {str(e)}"
 
     return render_template("upload.html")
 
-# ✅ 获取所有相册（Cloudinary 文件夹）
-@app.route('/albums')
+# 显示用户通过网站上传的相册，删除很旧的 cloudinary 文件夹查询
+@app.route("/albums")
 def albums():
     try:
         response = cloudinary.api.resources(
             type="upload",
-            prefix="albums/",  # 获取 albums 文件夹下所有图片
+            prefix="albums/",
             max_results=100
         )
         image_urls = [item['secure_url'] for item in response['resources']]
         return render_template("albums.html", image_urls=image_urls)
     except Exception as e:
+        traceback.print_exc()
         return f"Error fetching album images: {str(e)}"
 
-        # 每个相册显示一张封面图（获取该文件夹中最新一张图）
-        albums = []
-        for folder in folders:
-            folder_name = folder["name"]
-            resources = cloudinary.api.resources(
-                type="upload",
-                prefix=f"albums/{folder_name}/",
-                max_results=1,
-                direction="desc"
-            )
-            cover_url = None
-            if resources["resources"]:
-                cover_url = resources["resources"][0]["secure_url"]
-
-            albums.append({
-                "name": folder_name,
-                "cover": cover_url
-            })
-
-        return render_template("album.html", albums=albums)
-
-    except Exception as e:
-        traceback.print_exc()  # 打印详细错误信息
-        return f"Error fetching albums: {str(e)}"
-
-# ✅ 查看某个相册的所有图片（Cloudinary 查询）
+# 查看某一相册内的所有图片
 @app.route("/album/<album_name>")
 def view_album(album_name):
     try:
@@ -131,8 +104,8 @@ def view_album(album_name):
         return render_template("view_album.html", album_name=album_name, image_urls=image_urls)
 
     except Exception as e:
+        traceback.print_exc()
         return f"Error fetching album '{album_name}': {str(e)}"
-
 
 
 
