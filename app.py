@@ -37,10 +37,25 @@ def story():
 
 @app.route("/submit_story", methods=["POST"])
 def submit_story():
-    text = request.form.get("text")
-    image_url = request.form.get("image_url")
-    # 暂时先简单处理，后续可以存储
-    return redirect(url_for("story"))
+    try:
+        story_text = request.form.get("story")
+        photo = request.files.get("photo")
+        image_url = None
+
+        if photo:
+            upload_result = cloudinary.uploader.upload(photo, folder="stories")
+            image_url = upload_result.get("secure_url")
+
+        # 假设将来你要存数据库，这里可以保存 text 和 image_url
+        print("Story submitted:", story_text)
+        print("Image URL:", image_url)
+
+        return redirect(url_for("story"))
+
+    except Exception as e:
+        traceback.print_exc()
+        return f"Error submitting story: {str(e)}"
+
 
 # 上传页面（支持上传到 Cloudinary）
 @app.route("/upload", methods=['GET', 'POST'])
