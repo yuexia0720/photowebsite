@@ -80,36 +80,18 @@ def upload():
     return render_template("upload.html")
 
 # ✅ 获取所有相册（Cloudinary 文件夹）
-@app.route("/album")
-def album():
+@app.route('/albums')
+def albums():
     try:
-        result = cloudinary.api.subfolders("albums")  # ✅ 正确的 API 方法
-        folders = result.get("folders", [])
-
-        albums = []
-        for folder in folders:
-            folder_name = folder["name"]
-            resources = cloudinary.api.resources(
-                type="upload",
-                prefix=f"albums/{folder_name}/",
-                max_results=1,
-                direction="desc"
-            )
-            cover_url = None
-            if resources["resources"]:
-                cover_url = resources["resources"][0]["secure_url"]
-
-            albums.append({
-                "name": folder_name,
-                "cover": cover_url
-            })
-
-        print("Fetched albums:", albums)
-        return render_template("album.html", albums=albums)
-
+        response = cloudinary.api.resources(
+            type="upload",
+            prefix="albums/",  # 获取 albums 文件夹下所有图片
+            max_results=100
+        )
+        image_urls = [item['secure_url'] for item in response['resources']]
+        return render_template("albums.html", image_urls=image_urls)
     except Exception as e:
-        traceback.print_exc()
-        return f"Error fetching albums: {str(e)}"
+        return f"Error fetching album images: {str(e)}"
 
         # 每个相册显示一张封面图（获取该文件夹中最新一张图）
         albums = []
