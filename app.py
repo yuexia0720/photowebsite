@@ -106,17 +106,7 @@ def view_album(album_name):
     except Exception as e:
         return f"Error fetching album '{album_name}': {str(e)}"
 
-@app.route("/upload", methods=["GET", "POST"])
-def upload():
-    if request.method == "POST":
-        file = request.files["file"]
-        album_name = request.form["album"]
-        result = cloudinary.uploader.upload(
-            file,
-            folder=f"albums/{album_name}/"
-        )
-        return redirect(url_for("album"))
-    return render_template("upload.html")
+
 
 
 
