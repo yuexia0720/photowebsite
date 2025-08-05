@@ -46,15 +46,12 @@
     <h1>Upload a Photo</h1>
 
     <form method="POST" enctype="multipart/form-data">
-    <input type="file" name="photo">
-    <input type="text" name="folder" placeholder="Enter folder name">
-    <button type="submit">Upload</button>
-</form>
-
-    {% if message %}
-        <p class="message">{{ message }}</p>
-    {% endif %}
-
-    <a href="{{ url_for('albums') }}">← Back to Albums</a>
+        <label for="album">Album Name:</label>
+        <input type="text" name="album" required><br><br>
+        <label for="file">Choose Photo:</label>
+        <input type="file" name="file" accept="image/*" required><br><br>
+        <input type="submit" value="Upload">
+    </form>
+    <p><a href="{{ url_for('albums') }}">Back to Albums</a></p>
 </body>
 </html>
