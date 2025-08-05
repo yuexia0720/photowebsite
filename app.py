@@ -8,9 +8,9 @@ app = Flask(__name__)
 
 # 配置 Cloudinary
 cloudinary.config(
-    cloud_name='你的cloud_name',
-    api_key='你的api_key',
-    api_secret='你的api_secret'
+    cloud_name='dpr0pl2tf',
+    api_key='548549517251566',
+    api_secret='9o-PlPBRQzQPfuVCQfaGrUV3_IE'
 )
 
 # 首页
