@@ -98,7 +98,7 @@ def album():
                 "name": folder_name,
                 "cover": cover_url
             })
-
+        print("Fetched albums:", albums)
         return render_template("album.html", albums=albums)
 
     except Exception as e:
