@@ -54,6 +54,14 @@
 
         <button type="submit">Upload</button>
     </form>
+    
+    <h2>Upload Photo</h2>
+    
+    <form method="POST" enctype="multipart/form-data">
+       <input type="text" name="album" placeholder="Album name" required><br>
+       <input type="file" name="file" required><br>
+       <button type="submit">Upload</button>
+    </form>
 
     {% if message %}
         <p class="message">{{ message }}</p>
