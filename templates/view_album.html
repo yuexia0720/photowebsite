@@ -1,17 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ album_name }}</title>
-</head>
-<body>
-    <h1>Album: {{ album_name }}</h1>
-    {% for url in image_urls %}
-        <img src="{{ url }}" style="width:300px;"><br><br>
-    {% endfor %}
-    <br>
-    <a href="{{ url_for('album') }}">⬅ Back to Albums</a>
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+<h2 style="text-align:center;">Album: {{ album_name }}</h2>
+<div style="display:flex; flex-wrap:wrap; justify-content:center;">
+  {% for url in image_urls %}
+    <img src="{{ url }}" style="width:200px; height:150px; object-fit:cover; margin:10px;">
+  {% endfor %}
+</div>
+{% endblock %}
+
 
 
 
