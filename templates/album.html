@@ -4,18 +4,25 @@
     <title>Albums</title>
 </head>
 <body>
-    <h1>My Photo Album</h1>
-    {% if image_urls %}
-        {% for url in image_urls %}
-            <div>
-                <img src="{{ url }}" alt="Photo" width="300">
-            </div>
+    <h1>Albums</h1>
+    {% if albums %}
+        <ul>
+        {% for name, cover_url in albums.items() %}
+            <li>
+                <a href="{{ url_for('view_album', album_name=name) }}">
+                    <img src="{{ cover_url }}" alt="{{ name }}" width="200"><br>
+                    {{ name }}
+                </a>
+            </li>
         {% endfor %}
+        </ul>
     {% else %}
-        <p>No photos uploaded yet.</p>
+        <p>No albums found.</p>
     {% endif %}
+    <p><a href="{{ url_for('upload') }}">Upload New Photo</a></p>
 </body>
 </html>
+
 
 
 
