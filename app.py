@@ -22,20 +22,20 @@ def index():
 def about():
     return render_template('about.html')
 
-@app.route('/story')
-def story():
-    return render_template('story.html')
+# 存储所有故事
+stories = []
 
-@app.route('/upload', methods=['GET', 'POST'])
-def upload():
+@app.route('/story', methods=['GET', 'POST'])
+def story():
+    global stories
     if request.method == 'POST':
-        album_name = request.form.get('album')
-        file = request.files['photo']
-        if album_name and file:
-            folder_path = f"albums/{album_name}"
-            cloudinary.uploader.upload(file, folder=folder_path)
-        return render_template('upload.html', success=True)
-    return render_template('upload.html')
+        title = request.form.get('title')
+        content = request.form.get('content')
+        image_url = request.form.get('image_url')
+        stories.append({'title': title, 'content': content, 'image_url': image_url})
+        return redirect(url_for('story'))
+
+    return render_template('story.html', stories=stories)
 
 @app.route('/album')
 def album():
