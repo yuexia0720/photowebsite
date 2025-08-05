@@ -1,16 +1,65 @@
+<!-- templates/index.html -->
 <!DOCTYPE html>
-<html>
-<head><title>My Lens</title></head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Lens</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-image: url('https://res.cloudinary.com/dpr0pl2tf/image/upload/v1754343393/pexels-caio-69969_aq5kzz.jpg');
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.6);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    h1 {
+      font-size: 4em;
+      margin: 0;
+    }
+
+    nav {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      font-size: 1.2em;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
 <body>
+  <nav>
+    <a href="/about">About</a>
+    <a href="/album">Album</a>
+    <a href="/story">Story</a>
+    <a href="/upload">Upload</a>
+  </nav>
+
+  <div class="overlay">
     <h1>My Lens</h1>
-    <nav>
-        <a href="/">Home</a> |
-        <a href="/about">About</a> |
-        <a href="/album">Album</a> |
-        <a href="/story">Story</a> |
-        <a href="/upload">Upload</a>
-    </nav>
-    <p>Welcome to my photography world!</p>
+  </div>
 </body>
 </html>
 
