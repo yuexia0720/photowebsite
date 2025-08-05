@@ -5,6 +5,8 @@
 </head>
 <body>
     <h1>Albums</h1>
+
+    {% if albums %}
     <ul>
         {% for album in albums %}
         <li>
@@ -17,10 +19,11 @@
                 <p>{{ album.name }}</p>
             </a>
         </li>
-        {% else %}
-        <p>No albums found.</p>
         {% endfor %}
     </ul>
+    {% else %}
+        <p>No albums found.</p>
+    {% endif %}
 </body>
 </html>
 
