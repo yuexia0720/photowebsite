@@ -1,29 +1,28 @@
 {% extends "base.html" %}
+
 {% block title %}Story{% endblock %}
 
 {% block content %}
-    <h2>Share Your Story</h2>
-    <form action="/story" method="post" enctype="multipart/form-data">
-        <div>
-            <label for="description">Your Story:</label><br>
-            <textarea name="description" rows="4" cols="50" required></textarea>
-        </div>
-        <div>
-            <label for="photo">Upload Photo:</label>
-            <input type="file" name="photo" accept="image/*" required>
-        </div>
-        <button type="submit">Submit</button>
-    </form>
+<h2>Submit Your Story</h2>
 
-    <hr>
+<form action="{{ url_for('submit_story') }}" method="POST" enctype="multipart/form-data">
+    <textarea name="story" rows="4" cols="50" placeholder="Write your story here..." required></textarea><br><br>
+    <input type="file" name="photo" accept="image/*" required><br><br>
+    <button type="submit">Submit Story</button>
+</form>
 
-    <h3>Stories:</h3>
-    {% for story in stories %}
-        <div style="margin-bottom: 30px;">
-            <img src="{{ story.image_url }}" alt="Story Image" width="400"><br>
-            <p>{{ story.description }}</p>
-        </div>
-    {% endfor %}
+<hr>
+
+<h2>Stories</h2>
+{% for item in stories %}
+    <div style="margin-bottom: 30px;">
+        <img src="{{ item.image }}" width="400"><br>
+        <p>{{ item.text }}</p>
+    </div>
+{% else %}
+    <p>No stories yet. Be the first to submit!</p>
+{% endfor %}
 {% endblock %}
+
 
 
