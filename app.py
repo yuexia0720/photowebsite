@@ -78,7 +78,7 @@ def upload():
 @app.route("/album")
 def album():
     try:
-        result = cloudinary.api.sub_folders("albums")  # 注意方法是 sub_folders 而不是 subfolders
+        result = cloudinary.api.subfolders("albums")  # ✅ 正确的 API 方法
         folders = result.get("folders", [])
 
         albums = []
@@ -98,6 +98,7 @@ def album():
                 "name": folder_name,
                 "cover": cover_url
             })
+
         print("Fetched albums:", albums)
         return render_template("album.html", albums=albums)
 
