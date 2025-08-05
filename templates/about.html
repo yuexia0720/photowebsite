@@ -1,25 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>About</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    {% include 'navbar.html' %}
-    <div class="about-container">
+{% extends "base.html" %}
+{% block title %}About{% endblock %}
+{% block content %}
+<div class="about-container">
+    <div class="about-box">
         <div class="about-text">
-            <h1>About Me</h1>
-            <p>
-                I’m a passionate photographer capturing moments that tell unique stories.
-                From the forests of Pennsylvania to the streets of Pittsburgh, my lens finds beauty in every corner.
-            </p>
+            <h2>Hi, I’m Yuexia</h2>
+            <p>I am a passionate photographer who loves to capture the beauty of life through my lens...</p>
         </div>
         <div class="about-image">
-            <img src="https://res.cloudinary.com/dpr0pl2tf/image/upload/v1754343392/pexels-samuel-walker-15032-569098_wm1kxg.jpg" alt="About Image">
+            <img src="{{ image_url }}" alt="About Image">
         </div>
     </div>
-</body>
-</html>
+</div>
+{% endblock %}
+
 
 
