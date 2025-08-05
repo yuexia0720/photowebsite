@@ -23,7 +23,11 @@ def about():
 
 @app.route("/story")
 def story():
-    return render_template("story.html")
+    stories = [
+        {"text": "First story!", "image": "https://res.cloudinary.com/dpr0pl2tf/image/upload/v1754343393/pexels-caio-69969_aq5kzz.jpg"},
+        {"text": "Another story.", "image": "https://res.cloudinary.com/dpr0pl2tf/image/upload/v1754343392/pexels-samuel-walker-15032-569098_wm1kxg.jpg"}
+    ]
+    return render_template("story.html", stories=stories)
 
 # 上传页面（支持上传到 Cloudinary）
 @app.route("/upload", methods=['GET', 'POST'])
@@ -47,7 +51,7 @@ def upload():
 def album():
     try:
         result = cloudinary.api.sub_folders("albums")
-        folders = result.get("folders", [])
+        folders = result.get("sub_folders", [])
 
         # 每个相册显示一张封面图（获取该文件夹中最新一张图）
         albums = []
