@@ -1,26 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Upload Photo</title>
-</head>
-<body>
-    <h1>Upload Photo</h1>
-    {% if success %}
-        <p>✅ Photo uploaded successfully!</p>
-    {% endif %}
-    <form method="post" enctype="multipart/form-data">
-        <label>Album name:</label>
-        <input type="text" name="album_name" required><br><br>
-
-        <label>Select photo:</label>
-        <input type="file" name="photo" required><br><br>
-
-        <button type="submit">Upload</button>
-    </form>
-
-    <br>
-    <a href="{{ url_for('album') }}">⬅ Back to Albums</a>
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+<h2 style="text-align:center;">Upload Image</h2>
+<form method="POST" enctype="multipart/form-data" style="text-align:center; margin-top: 2em;">
+    <input type="text" name="folder" placeholder="Album name (e.g. nature)" required><br><br>
+    <input type="file" name="image" required><br><br>
+    <button type="submit">Upload</button><br><br>
+    <a href="{{ url_for('album') }}">Go to Album Page</a>
+</form>
+{% endblock %}
 
 
