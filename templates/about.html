@@ -1,12 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>About Me</title>
+    <meta charset="UTF-8">
+    <title>About</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>About the Photographer</h1>
-    <img src="https://res.cloudinary.com/dpr0pl2tf/image/upload/v1754343392/pexels-samuel-walker-15032-569098_wm1kxg.jpg" style="width:300px;">
-    <p>Hello! I'm a passionate photographer who loves to capture the beauty of everyday life and nature. Thank you for visiting my gallery!</p>
+    {% include 'navbar.html' %}
+    <div class="about-container">
+        <div class="about-text">
+            <h1>About Me</h1>
+            <p>
+                I’m a passionate photographer capturing moments that tell unique stories.
+                From the forests of Pennsylvania to the streets of Pittsburgh, my lens finds beauty in every corner.
+            </p>
+        </div>
+        <div class="about-image">
+            <img src="https://res.cloudinary.com/dpr0pl2tf/image/upload/v1754343392/pexels-samuel-walker-15032-569098_wm1kxg.jpg" alt="About Image">
+        </div>
+    </div>
 </body>
 </html>
 
