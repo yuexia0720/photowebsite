@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
+import traceback
 
 app = Flask(__name__)
 
@@ -23,11 +24,16 @@ def about():
 
 @app.route("/story")
 def story():
-    stories = [
-        {"text": "First story!", "image": "https://res.cloudinary.com/dpr0pl2tf/image/upload/v1754343393/pexels-caio-69969_aq5kzz.jpg"},
-        {"text": "Another story.", "image": "https://res.cloudinary.com/dpr0pl2tf/image/upload/v1754343392/pexels-samuel-walker-15032-569098_wm1kxg.jpg"}
-    ]
-    return render_template("story.html", stories=stories)
+    try:
+        stories = [
+            {"text": "First story!", "image": "https://res.cloudinary.com/dpr0pl2tf/image/upload/v1754343393/pexels-caio-69969_aq5kzz.jpg"},
+            {"text": "Another story.", "image": "https://res.cloudinary.com/dpr0pl2tf/image/upload/v1754343392/pexels-samuel-walker-15032-569098_wm1kxg.jpg"}
+        ]
+        return render_template("story.html", stories=stories)
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return f"Error rendering story page: {str(e)}"
 
 # 上传页面（支持上传到 Cloudinary）
 @app.route("/upload", methods=['GET', 'POST'])
@@ -75,6 +81,7 @@ def album():
         return render_template("album.html", albums=albums)
 
     except Exception as e:
+        traceback.print_exc()  # 打印详细错误信息
         return f"Error fetching albums: {str(e)}"
 
 # ✅ 查看某个相册的所有图片（Cloudinary 查询）
