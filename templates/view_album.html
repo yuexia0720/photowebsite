@@ -1,0 +1,16 @@
+<!-- templates/view_album.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ album_name }}</title>
+</head>
+<body>
+    <h1>{{ album_name }}</h1>
+    {% for photo in photos %}
+        <img src="{{ photo }}" style="width:300px;">
+    {% endfor %}
+</body>
+</html>
+
+
+
