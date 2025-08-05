@@ -58,20 +58,25 @@ def submit_story():
 
 
 # 上传页面（支持上传到 Cloudinary）
-@app.route("/upload", methods=['GET', 'POST'])
+@app.route("/upload", methods=["GET", "POST"])
 def upload():
-    if request.method == 'POST':
-        folder = request.form['folder']
-        files = request.files.getlist('photos')
-        for file in files:
-            if file.filename:
-                cloudinary.uploader.upload(
-                    file,
-                    folder=f"albums/{folder}",
-                    use_filename=True,
-                    unique_filename=False
-                )
-        return redirect(url_for('album'))
+    if request.method == "POST":
+        photo = request.files.get("photo")
+        folder = request.form.get("folder")
+
+        if not photo or not folder:
+            return "Missing photo or folder", 400
+
+        try:
+            upload_result = cloudinary.uploader.upload(
+                photo,
+                folder=f"albums/{folder}"
+            )
+            return redirect(url_for("album"))
+        except Exception as e:
+            traceback.print_exc()
+            return f"Error uploading photo: {str(e)}"
+
     return render_template("upload.html")
 
 # ✅ 获取所有相册（Cloudinary 文件夹）
