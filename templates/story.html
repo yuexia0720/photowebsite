@@ -1,28 +1,13 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html>
+<head><title>My Stories</title></head>
+<body>
+    <h1>Photo Stories</h1>
+    <p>This is the Story page.</p>
+    <a href="/">Back to Home</a>
+</body>
+</html>
 
-{% block title %}Story{% endblock %}
-
-{% block content %}
-<h2>Submit Your Story</h2>
-
-<form action="{{ url_for('submit_story') }}" method="POST" enctype="multipart/form-data">
-    <textarea name="story" rows="4" cols="50" placeholder="Write your story here..." required></textarea><br><br>
-    <input type="file" name="photo" accept="image/*" required><br><br>
-    <button type="submit">Submit Story</button>
-</form>
-
-<hr>
-
-<h2>Stories</h2>
-{% for item in stories %}
-    <div style="margin-bottom: 30px;">
-        <img src="{{ item.image }}" width="400"><br>
-        <p>{{ item.text }}</p>
-    </div>
-{% else %}
-    <p>No stories yet. Be the first to submit!</p>
-{% endfor %}
-{% endblock %}
 
 
 
