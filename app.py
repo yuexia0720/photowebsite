@@ -6,19 +6,12 @@ import cloudinary.api
 
 app = Flask(__name__)
 
-# --------------------------
 # Cloudinary 设置
-# --------------------------
 cloudinary.config(
     cloud_name="dpr0pl2tf",
     api_key="548549517251566",
     api_secret="9o-PlPBRQzQPfuVCQfaGrUV3_IE"
 )
-
-# 本地上传文件夹
-UPLOAD_FOLDER = 'static/uploads'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 @app.route("/")
 def home():
@@ -28,79 +21,73 @@ def home():
 def about():
     return render_template("about.html")
 
-@app.route("/album")
-def album():
-    folders = []
-    for folder_name in os.listdir(UPLOAD_FOLDER):
-        folder_path = os.path.join(UPLOAD_FOLDER, folder_name)
-        if os.path.isdir(folder_path):
-            folders.append(folder_name)
-    return render_template("album.html", folders=folders)
+@app.route("/story")
+def story():
+    return render_template("story.html")
 
-@app.route("/album/<album_name>")
-def view_album(album_name):
-    album_path = os.path.join(UPLOAD_FOLDER, album_name)
-    if os.path.exists(album_path):
-        image_urls = []
-        for filename in os.listdir(album_path):
-            if filename.lower().endswith((".png", ".jpg", ".jpeg", ".gif")):
-                image_urls.append(f"/{UPLOAD_FOLDER}/{album_name}/{filename}")
-        return render_template("album_view.html", album_name=album_name, image_urls=image_urls)
-    else:
-        return "Album not found", 404
-
+# 上传页面（支持上传到 Cloudinary）
 @app.route("/upload", methods=['GET', 'POST'])
 def upload():
     if request.method == 'POST':
         folder = request.form['folder']
-
         files = request.files.getlist('photos')
         for file in files:
             if file.filename:
-                cloudinary.uploader.upload(file,
-                                           folder=f"albums/{folder}",
-                                           use_filename=True,
-                                           unique_filename=False)
+                cloudinary.uploader.upload(
+                    file,
+                    folder=f"albums/{folder}",
+                    use_filename=True,
+                    unique_filename=False
+                )
         return redirect(url_for('album'))
-
     return render_template("upload.html")
 
-# ---- 新增 ----
-@app.route("/submit_story", methods=['POST'])
-def submit_story():
-    story_text = request.form.get('story')
-    photo = request.files.get('photo')
+# ✅ 获取所有相册（Cloudinary 文件夹）
+@app.route("/album")
+def album():
+    try:
+        result = cloudinary.api.sub_folders("albums")
+        folders = result.get("folders", [])
 
-    image_url = None
+        # 每个相册显示一张封面图（获取该文件夹中最新一张图）
+        albums = []
+        for folder in folders:
+            folder_name = folder["name"]
+            resources = cloudinary.api.resources(
+                type="upload",
+                prefix=f"albums/{folder_name}/",
+                max_results=1,
+                direction="desc"
+            )
+            cover_url = None
+            if resources["resources"]:
+                cover_url = resources["resources"][0]["secure_url"]
 
-    if photo and photo.filename:
-        result = cloudinary.uploader.upload(photo, folder="stories", use_filename=True, unique_filename=False)
-        image_url = result['secure_url']
+            albums.append({
+                "name": folder_name,
+                "cover": cover_url
+            })
 
-    if not os.path.exists("stories.txt"):
-        with open("stories.txt", "w") as f:
-            pass
+        return render_template("album.html", albums=albums)
 
-    with open("stories.txt", "a", encoding="utf-8") as f:
-        f.write(image_url + "||" + story_text.replace("\n", "\\n") + "\n")
+    except Exception as e:
+        return f"Error fetching albums: {str(e)}"
 
-    return redirect(url_for('story'))
+# ✅ 查看某个相册的所有图片（Cloudinary 查询）
+@app.route("/album/<album_name>")
+def view_album(album_name):
+    try:
+        response = cloudinary.api.resources(
+            type="upload",
+            prefix=f"albums/{album_name}/",
+            max_results=100
+        )
+        image_urls = [item["secure_url"] for item in response.get("resources", [])]
+        return render_template("view_album.html", album_name=album_name, image_urls=image_urls)
 
-@app.route("/story")
-def story():
-    stories = []
-    if os.path.exists("stories.txt"):
-        with open("stories.txt", "r", encoding="utf-8") as f:
-            for line in f:
-                parts = line.strip().split("||")
-                if len(parts) == 2:
-                    image_url = parts[0]
-                    story_text = parts[1].replace("\\n", "\n")
-                    stories.append({"image": image_url, "text": story_text})
-    return render_template("story.html", stories=stories)
+    except Exception as e:
+        return f"Error fetching album '{album_name}': {str(e)}"
 
-if __name__ == "__main__":
-    app.run(debug=True)
 
 
 
