@@ -32,7 +32,7 @@
 <body>
     <nav>
         <a href="/">Home</a>
-        <a href="/about">About</a>
+        <a href="{{ url_for('about') }}">About</a>
         <a href="/album">Album</a>
         <a href="{{ url_for('story') }}" class="hover:text-blue-500">Story</a>
         <a href="{{ url_for('upload') }}">Upload</a>
