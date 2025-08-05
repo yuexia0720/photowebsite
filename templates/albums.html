@@ -1,19 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Albums</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+    {% include 'navbar.html' %}
     <h1>Photo Albums</h1>
-    <ul>
-        {% for folder in folders %}
-            <li><a href="{{ url_for('view_album', album_name=folder) }}">{{ folder }}</a></li>
+    <div class="album-container">
+        {% for album in albums %}
+        <div class="album-card">
+            <a href="{{ url_for('view_album', album_name=album.name) }}">
+                <img src="{{ album.cover }}" alt="Cover of {{ album.name }}">
+                <h3>{{ album.name }}</h3>
+            </a>
+        </div>
         {% endfor %}
-    </ul>
-    <br>
-    <a href="{{ url_for('upload') }}">📤 Upload Photo</a>
+    </div>
 </body>
 </html>
+
 
 
 
