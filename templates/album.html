@@ -17,6 +17,8 @@
                 <p>{{ album.name }}</p>
             </a>
         </li>
+        {% else %}
+        <p>No albums found.</p>
         {% endfor %}
     </ul>
 </body>
