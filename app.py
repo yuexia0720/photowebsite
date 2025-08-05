@@ -35,6 +35,13 @@ def story():
         traceback.print_exc()
         return f"Error rendering story page: {str(e)}"
 
+@app.route("/submit_story", methods=["POST"])
+def submit_story():
+    text = request.form.get("text")
+    image_url = request.form.get("image_url")
+    # 暂时先简单处理，后续可以存储
+    return redirect(url_for("story"))
+
 # 上传页面（支持上传到 Cloudinary）
 @app.route("/upload", methods=['GET', 'POST'])
 def upload():
@@ -56,8 +63,8 @@ def upload():
 @app.route("/album")
 def album():
     try:
-        result = cloudinary.api.sub_folders("albums")
-        folders = result.get("sub_folders", [])
+        result = cloudinary.api.subfolders("albums")
+        folders = result.get("subfolders", [])
 
         # 每个相册显示一张封面图（获取该文件夹中最新一张图）
         albums = []
@@ -99,6 +106,17 @@ def view_album(album_name):
     except Exception as e:
         return f"Error fetching album '{album_name}': {str(e)}"
 
+@app.route("/upload", methods=["GET", "POST"])
+def upload():
+    if request.method == "POST":
+        file = request.files["file"]
+        album_name = request.form["album"]
+        result = cloudinary.uploader.upload(
+            file,
+            folder=f"albums/{album_name}/"
+        )
+        return redirect(url_for("album"))
+    return render_template("upload.html")
 
 
 
