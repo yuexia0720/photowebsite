@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>{{ album_name }}</title>
-</head>
+<head><title>{{ album_name }}</title></head>
 <body>
     <h1>Album: {{ album_name }}</h1>
     {% for url in image_urls %}
-        <img src="{{ url }}" width="300"><br><br>
+        <img src="{{ url }}" style="max-width: 300px;"><br>
     {% endfor %}
+    <a href="/album">Back to Albums</a>
 </body>
 </html>
 
