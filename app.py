@@ -37,6 +37,19 @@ def story():
 
     return render_template('story.html', stories=stories)
 
+@app.route('/upload', methods=['GET', 'POST'])
+def upload():
+    message = ''
+    if request.method == 'POST':
+        folder = request.form['folder']
+        image = request.files['image']
+        try:
+            cloudinary.uploader.upload(image, folder=f'albums/{folder}')
+            message = '上传成功！'
+        except Exception as e:
+            message = f'上传失败: {str(e)}'
+    return render_template('upload.html', message=message)
+
 @app.route('/album')
 def album():
     try:
