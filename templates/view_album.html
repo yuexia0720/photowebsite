@@ -1,18 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{ album_name }} - Album</title>
+    <title>{{ album_name }}</title>
 </head>
 <body>
     <h1>Album: {{ album_name }}</h1>
-    <div>
-        {% for image_url in image_urls %}
-            <div style="margin: 10px; display: inline-block;">
-                <img src="{{ image_url }}" alt="Photo" width="300"><br>
-            </div>
-        {% endfor %}
-    </div>
-    <p><a href="/albums">Back to Albums</a></p>
+    {% for url in image_urls %}
+        <img src="{{ url }}" width="300"><br><br>
+    {% endfor %}
 </body>
 </html>
 
