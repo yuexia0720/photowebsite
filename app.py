@@ -78,8 +78,14 @@ def upload():
 @app.route("/album")
 def album():
     try:
-        result = cloudinary.api.subfolders("albums")
-        folders = result.get("subfolders", [])
+        folder_path = "albums"
+        albums = cloudinary.api.resources(type="upload", prefix=folder_path, resource_type="image")
+        image_urls = [resource['secure_url'] for resource in albums.get("resources", [])]
+        return render_template("album.html", image_urls=image_urls)
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return f"Error fetching albums: {str(e)}"
 
         # 每个相册显示一张封面图（获取该文件夹中最新一张图）
         albums = []
