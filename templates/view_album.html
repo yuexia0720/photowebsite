@@ -1,16 +1,21 @@
-<!-- templates/view_album.html -->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{ album_name }}</title>
+    <title>{{ album_name }} - Album</title>
 </head>
 <body>
-    <h1>{{ album_name }}</h1>
-    {% for photo in photos %}
-        <img src="{{ photo }}" style="width:300px;">
-    {% endfor %}
+    <h1>Album: {{ album_name }}</h1>
+    <div>
+        {% for image_url in image_urls %}
+            <div style="margin: 10px; display: inline-block;">
+                <img src="{{ image_url }}" alt="Photo" width="300"><br>
+            </div>
+        {% endfor %}
+    </div>
+    <p><a href="/albums">Back to Albums</a></p>
 </body>
 </html>
+
 
 
 
