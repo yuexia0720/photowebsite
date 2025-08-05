@@ -1,22 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
+    <title>My Lens</title>
     <meta charset="UTF-8">
-    <title>{% block title %}My Lens{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            font-family: Arial;
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background-color: #333;
+            padding: 1em;
+        }
+        nav a {
+            color: white;
+            margin-right: 1em;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar">
+    <nav>
         <a href="{{ url_for('index') }}">Home</a>
         <a href="{{ url_for('about') }}">About</a>
         <a href="{{ url_for('album') }}">Album</a>
         <a href="{{ url_for('story') }}">Story</a>
         <a href="{{ url_for('upload') }}">Upload</a>
     </nav>
-
-    <div class="content">
-        {% block content %}{% endblock %}
-    </div>
+    {% block content %}{% endblock %}
 </body>
 </html>
+
 
