@@ -45,15 +45,11 @@
 <body>
     <h1>Upload a Photo</h1>
 
-    <form method="POST" action="/upload" enctype="multipart/form-data">
-        <label for="album">Album Name:</label>
-        <input type="text" id="album" name="album" required>
-
-        <label for="file">Choose Photo:</label>
-        <input type="file" id="file" name="file" required>
-
-        <button type="submit">Upload</button>
-    </form>
+    <form method="POST" enctype="multipart/form-data">
+    <input type="file" name="photo">
+    <input type="text" name="folder" placeholder="Enter folder name">
+    <button type="submit">Upload</button>
+</form>
 
     {% if message %}
         <p class="message">{{ message }}</p>
