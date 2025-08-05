@@ -1,19 +1,19 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html>
+<head><title>My Lens</title></head>
+<body>
+    <h1>My Lens</h1>
+    <nav>
+        <a href="/">Home</a> |
+        <a href="/about">About</a> |
+        <a href="/album">Album</a> |
+        <a href="/story">Story</a> |
+        <a href="/upload">Upload</a>
+    </nav>
+    <p>Welcome to my photography world!</p>
+</body>
+</html>
 
-{% block title %}My Lens{% endblock %}
-
-{% block content %}
-<div class="hero">
-    My Lens
-</div>
-
-<div class="container mt-4">
-    <h2 class="mb-4">Welcome to My Photo Gallery</h2>
-    {% for url in image_urls %}
-        <img src="{{ url }}" class="img-fluid mb-3" width="400">
-    {% endfor %}
-</div>
-{% endblock %}
 
 
 
