@@ -27,14 +27,18 @@ def about():
 @app.route("/album")
 def album():
     try:
-        folders = cloudinary.api.root_folders()
+        result = cloudinary.api.root_folders()
         albums = []
-        for folder in folders.get('folders', []):
-            subfolder_name = folder['name']
-            # 获取每个相册的第一张图片作为封面
-            resources = cloudinary.api.resources(type="upload", prefix=subfolder_name, max_results=1)
+        for folder in result['folders']:
+            folder_name = folder['name']
+            # 查找该文件夹中上传的第一张图片作为封面
+            resources = cloudinary.api.resources(
+                type="upload",
+                prefix=folder_name + "/",  # 注意这里加斜杠
+                max_results=1
+            )
             cover_url = resources['resources'][0]['secure_url'] if resources['resources'] else ""
-            albums.append({'name': subfolder_name, 'cover': cover_url})
+            albums.append({'name': folder_name, 'cover': cover_url})
         return render_template("album.html", albums=albums)
     except Exception as e:
         return f"Error fetching albums: {str(e)}"
