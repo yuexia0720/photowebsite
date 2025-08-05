@@ -1,15 +1,12 @@
 {% extends "base.html" %}
-{% block title %}About{% endblock %}
 {% block content %}
-<div class="about-container">
-    <div class="about-box">
-        <div class="about-text">
-            <h2>Hi, I’m Yuexia</h2>
-            <p>I am a passionate photographer who loves to capture the beauty of life through my lens...</p>
-        </div>
-        <div class="about-image">
-            <img src="{{ image_url }}" alt="About Image">
-        </div>
+<div style="display:flex; padding: 2em; align-items:center;">
+    <div style="flex:1; background-color:#f0f0f0; padding:2em; border-radius: 20px;">
+        <h2>About Me</h2>
+        <p>Hello! I'm a photography enthusiast who loves to capture the beauty of the world. Through my lens, I find stories in moments, light in shadows, and memories in details. Welcome to my visual diary.</p>
+    </div>
+    <div style="flex:1; text-align:right;">
+        <img src="https://res.cloudinary.com/dpr0pl2tf/image/upload/v1754343392/pexels-samuel-walker-15032-569098_wm1kxg.jpg" style="width:80%; border-radius: 20px;">
     </div>
 </div>
 {% endblock %}
