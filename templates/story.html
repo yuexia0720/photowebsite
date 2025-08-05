@@ -1,12 +1,39 @@
-<!DOCTYPE html>
-<html>
-<head><title>My Stories</title></head>
-<body>
-    <h1>Photo Stories</h1>
-    <p>This is the Story page.</p>
-    <a href="/">Back to Home</a>
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-10">
+    <h1 class="text-4xl font-bold mb-6 text-center">Share a Story</h1>
+    
+    <!-- Form -->
+    <form method="POST" class="bg-white p-6 rounded-xl shadow-md mb-10">
+        <div class="mb-4">
+            <label class="block font-semibold mb-1">Title</label>
+            <input type="text" name="title" required class="w-full border rounded-lg p-2">
+        </div>
+        <div class="mb-4">
+            <label class="block font-semibold mb-1">Image URL</label>
+            <input type="text" name="image_url" placeholder="Upload to Cloudinary and paste URL here" class="w-full border rounded-lg p-2">
+        </div>
+        <div class="mb-4">
+            <label class="block font-semibold mb-1">Content</label>
+            <textarea name="content" rows="5" required class="w-full border rounded-lg p-2"></textarea>
+        </div>
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Post Story</button>
+    </form>
+
+    <!-- Display stories -->
+    <div class="space-y-10">
+        {% for story in stories %}
+        <div class="bg-gray-100 p-6 rounded-xl shadow">
+            <h2 class="text-2xl font-bold mb-2">{{ story.title }}</h2>
+            {% if story.image_url %}
+            <img src="{{ story.image_url }}" class="mb-4 rounded-lg max-h-[400px] w-full object-cover">
+            {% endif %}
+            <p class="text-gray-800 whitespace-pre-line">{{ story.content }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
 
 
 
