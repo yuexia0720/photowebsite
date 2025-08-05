@@ -1,16 +1,15 @@
 {% extends "base.html" %}
-{% block title %}Albums{% endblock %}
 {% block content %}
-<h2>Albums</h2>
-<div class="album-list">
-    {% for album in albums %}
-    <div class="album-card">
-        <a href="{{ url_for('view_album', album_name=album.name) }}">
-            <img src="{{ album.cover }}" alt="{{ album.name }}">
-            <p>{{ album.name }}</p>
-        </a>
+<h2 style="text-align:center; padding: 1em;">My Albums</h2>
+<div style="display:flex; flex-wrap:wrap; justify-content:center;">
+  {% for album in albums %}
+    <div style="margin:1em; text-align:center;">
+      <a href="{{ url_for('view_album', album_name=album.name) }}">
+        <img src="{{ album.cover }}" style="width:200px; height:150px; object-fit:cover;"><br>
+        <strong>{{ album.name }}</strong>
+      </a>
     </div>
-    {% endfor %}
+  {% endfor %}
 </div>
 {% endblock %}
 
