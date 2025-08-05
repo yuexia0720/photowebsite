@@ -77,19 +77,19 @@ def upload():
     return render_template("upload.html")
 
 # 显示用户通过网站上传的相册，删除很旧的 cloudinary 文件夹查询
-@app.route("/albums")
+@app.route('/album')
 def albums():
-    try:
-        response = cloudinary.api.resources(
-            type="upload",
-            prefix="albums/",
-            max_results=100
-        )
-        image_urls = [item['secure_url'] for item in response['resources']]
-        return render_template("albums.html", image_urls=image_urls)
-    except Exception as e:
-        traceback.print_exc()
-        return f"Error fetching album images: {str(e)}"
+    # 显示上传的所有图片
+    image_folder = os.path.join(app.static_folder, 'uploads')
+    image_urls = []
+
+    if os.path.exists(image_folder):
+        for filename in os.listdir(image_folder):
+            if filename.lower().endswith(('.jpg', '.jpeg', '.png', '.gif', '.webp')):
+                url = url_for('static', filename='uploads/' + filename)
+                image_urls.append(url)
+
+    return render_template('albums.html', image_urls=image_urls)
 
 # 查看某一相册内的所有图片
 @app.route("/album/<album_name>")
