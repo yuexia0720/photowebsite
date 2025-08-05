@@ -1,40 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>{% block title %}My Lens{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
-        nav {
-            background-color: #333;
-            padding: 10px;
-        }
-        nav a {
-            color: white;
-            margin: 10px;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        nav a:hover {
-            text-decoration: underline;
-        }
-        .content {
-            padding: 30px;
-            text-align: center;
-        }
-        .cover-image {
-            width: 100%;
-            max-height: 500px;
-            object-fit: cover;
-        }
-    </style>
 </head>
 <body>
-    <nav>
-        <a href="/">Home</a>
+    <nav class="navbar">
+        <a href="{{ url_for('index') }}">Home</a>
         <a href="{{ url_for('about') }}">About</a>
-        <a href="/album">Album</a>
-        <a href="{{ url_for('story') }}" class="hover:text-blue-500">Story</a>
+        <a href="{{ url_for('album') }}">Album</a>
+        <a href="{{ url_for('story') }}">Story</a>
         <a href="{{ url_for('upload') }}">Upload</a>
     </nav>
 
@@ -43,3 +19,4 @@
     </div>
 </body>
 </html>
+
