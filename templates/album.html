@@ -1,18 +1,21 @@
 {% include 'navbar.html' %}
-{% extends "base.html" %}
-{% block content %}
-<h2 style="text-align:center; padding: 1em;">My Albums</h2>
-<div style="display:flex; flex-wrap:wrap; justify-content:center;">
+
+<h1>Albums</h1>
+<div style="display: flex; flex-wrap: wrap; gap: 20px;">
   {% for album in albums %}
-    <div style="margin:1em; text-align:center;">
+    <div style="text-align: center;">
       <a href="{{ url_for('view_album', album_name=album.name) }}">
-        <img src="{{ album.cover }}" style="width:200px; height:150px; object-fit:cover;"><br>
-        <strong>{{ album.name }}</strong>
+        {% if album.cover %}
+          <img src="{{ album.cover }}" alt="{{ album.name }}" style="width: 200px; height: 200px; object-fit: cover;">
+        {% else %}
+          <div style="width: 200px; height: 200px; background: #ccc;">No cover</div>
+        {% endif %}
+        <p>{{ album.name }}</p>
       </a>
     </div>
   {% endfor %}
 </div>
-{% endblock %}
+
 
 
 
