@@ -1,52 +1,72 @@
-{% extends "base.html" %}
-{% block content %}
-<h1>Share Your Story</h1>
-<form method="POST" enctype="multipart/form-data">
-    <input type="file" name="image" required>
-    <textarea name="story" placeholder="Write your story..." required></textarea>
-    <button type="submit">Post Story</button>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Story</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+            max-width: 800px;
+            margin: auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        form {
+            margin-bottom: 3rem;
+            border: 1px solid #ccc;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        input[type="file"],
+        textarea,
+        button {
+            display: block;
+            width: 100%;
+            margin: 1rem 0;
+            padding: 0.5rem;
+            font-size: 1rem;
+        }
+        .story-item {
+            margin-bottom: 2rem;
+        }
+        .story-item img {
+            max-width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .caption {
+            margin-top: 0.5rem;
+            font-style: italic;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Story Gallery</h1>
 
-<div class="story-grid">
-    {% for image_url, story_text in stories %}
-    <div class="story-item">
-        <img src="{{ image_url }}" alt="story image">
-        <p>{{ story_text }}</p>
-    </div>
+    <!-- 上传表单 -->
+    <form action="/story" method="post" enctype="multipart/form-data">
+        <label for="image">Story Image</label>
+        <input type="file" name="image" required>
+
+        <label for="story">Caption</label>
+        <textarea name="story" placeholder="Enter your story or image caption..." rows="4" required></textarea>
+
+        <button type="submit">Upload</button>
+    </form>
+
+    <!-- 显示已有的图片和文字 -->
+    {% for item in stories %}
+        <div class="story-item">
+            <img src="{{ item.url }}" alt="Story image">
+            <div class="caption">{{ item.caption }}</div>
+        </div>
     {% endfor %}
-</div>
-
-<style>
-.story-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: flex-start;
-}
-.story-item {
-    width: 300px;
-    border: 1px solid #ccc;
-    border-radius: 12px;
-    padding: 10px;
-    box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
-}
-.story-item img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-}
-.story-item p {
-    margin-top: 10px;
-    font-size: 16px;
-}
-textarea {
-    width: 100%;
-    height: 100px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-</style>
-{% endblock %}
+</body>
+</html>
 
 
 
