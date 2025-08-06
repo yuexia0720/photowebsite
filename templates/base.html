@@ -1,34 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My Lens</title>
     <meta charset="UTF-8">
-    <style>
-        body {
-            font-family: Arial;
-            margin: 0;
-            padding: 0;
-        }
-        nav {
-            background-color: #333;
-            padding: 1em;
-        }
-        nav a {
-            color: white;
-            margin-right: 1em;
-            text-decoration: none;
-        }
-    </style>
+    <title>{% block title %}My Photo Gallery{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <nav>
-        <a href="{{ url_for('index') }}">Home</a>
-        <a href="{{ url_for('about') }}">About</a>
-        <a href="{{ url_for('albums') }}">Album</a>
-        <a href="{{ url_for('story') }}">Story</a>
-        <a href="{{ url_for('upload') }}">Upload</a>
-    </nav>
-    {% block content %}{% endblock %}
+
+    {% include 'navbar.html' %}  <!-- 加入这一行 -->
+
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+
 </body>
 </html>
 
