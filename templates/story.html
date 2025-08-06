@@ -1,72 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Story</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 2rem;
-            max-width: 800px;
-            margin: auto;
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        form {
-            margin-bottom: 3rem;
-            border: 1px solid #ccc;
-            padding: 1rem;
-            border-radius: 8px;
-        }
-        input[type="file"],
-        textarea,
-        button {
-            display: block;
-            width: 100%;
-            margin: 1rem 0;
-            padding: 0.5rem;
-            font-size: 1rem;
-        }
-        .story-item {
-            margin-bottom: 2rem;
-        }
-        .story-item img {
-            max-width: 100%;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-        .caption {
-            margin-top: 0.5rem;
-            font-style: italic;
-            color: #555;
-        }
-    </style>
-</head>
-<body>
-    <h1>Story Gallery</h1>
+{% include 'navbar.html' %}
 
-    <!-- 上传表单 -->
-    <form action="/story" method="post" enctype="multipart/form-data">
-        <label for="image">Story Image</label>
-        <input type="file" name="image" required>
+<h1>Photo Stories</h1>
 
-        <label for="story">Caption</label>
-        <textarea name="story" placeholder="Enter your story or image caption..." rows="4" required></textarea>
+<form method="post" enctype="multipart/form-data">
+  <label>Story Image</label>
+  <input type="file" name="image" required><br>
+  <label>Caption</label>
+  <textarea name="caption" required></textarea><br>
+  <button type="submit">Upload</button>
+</form>
 
-        <button type="submit">Upload</button>
-    </form>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 30px;">
+  {% for story in stories %}
+    <div style="width: 300px;">
+      <img src="{{ story.image_url }}" alt="Story image" style="width: 100%;">
+      <p>{{ story.caption }}</p>
+    </div>
+  {% endfor %}
+</div>
 
-    <!-- 显示已有的图片和文字 -->
-    {% for item in stories %}
-        <div class="story-item">
-            <img src="{{ item.url }}" alt="Story image">
-            <div class="caption">{{ item.caption }}</div>
-        </div>
-    {% endfor %}
-</body>
-</html>
 
 
 
