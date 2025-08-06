@@ -50,32 +50,23 @@ def view_album(album_name):
         return f"Error loading album: {str(e)}"
 
 # 上传图片
-@app.route("/upload", methods=["GET", "POST"])
+@app.route('/upload', methods=['GET', 'POST'])
 def upload():
-    if request.method == "POST":
-        folder = request.form.get("folder")
-        image = request.files.get("image")
-        if folder and image:
-            cloudinary.uploader.upload(image, folder=folder)
-            return redirect(url_for("upload"))
-        else:
-            return "Missing folder or image", 400
-    return render_template("upload.html")
+    if request.method == 'POST':
+        if 'photo' not in request.files:
+            return "No photo part", 400
+        photo = request.files['photo']
+        if photo.filename == '':
+            return "No selected file", 400
+        try:
+            upload_result = cloudinary.uploader.upload(photo)
+            image_url = upload_result['secure_url']
+            albums['Pittsburgh + Cook Forest'].append(image_url)
+            return redirect(url_for('album'))
+        except Exception as e:
+            return f"Upload failed: {str(e)}", 500
 
-# Story 页面展示
-@app.route("/story", methods=["GET"])
-def story():
-    try:
-        stories = cloudinary.api.resources(type="upload", prefix="story")
-        story_list = []
-        for s in stories["resources"]:
-            story_list.append({
-                "url": s["secure_url"],
-                "caption": s.get("context", {}).get("custom", {}).get("caption", "")
-            })
-        return render_template("story.html", stories=story_list)
-    except Exception as e:
-        return f"Error loading stories: {str(e)}"
+    return render_template("upload.html")
 
 # Post Story 逻辑
 @app.route('/story', methods=['GET', 'POST'])
