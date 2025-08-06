@@ -1,12 +1,11 @@
-{% extends "base.html" %}
-{% block content %}
-<h2 style="text-align:center;">Album: {{ album_name }}</h2>
-<div style="display:flex; flex-wrap:wrap; justify-content:center;">
+{% include 'navbar.html' %}
+
+<h1>{{ album_name }}</h1>
+<div style="display: flex; flex-wrap: wrap; gap: 20px;">
   {% for url in image_urls %}
-    <img src="{{ url }}" style="width:200px; height:150px; object-fit:cover; margin:10px;">
+    <img src="{{ url }}" style="width: 200px;">
   {% endfor %}
 </div>
-{% endblock %}
 
 
 
