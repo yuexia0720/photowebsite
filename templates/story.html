@@ -1,21 +1,53 @@
 {% extends "base.html" %}
 {% block content %}
-<h2 style="text-align:center;">Stories</h2>
-<form action="{{ url_for('post_story') }}" method="POST" enctype="multipart/form-data" style="text-align:center;">
-    <input type="file" name="image" required><br><br>
-    <textarea name="caption" placeholder="Write your story here..." rows="4" cols="40" required></textarea><br><br>
+<h1>Share Your Story</h1>
+<form method="POST" enctype="multipart/form-data">
+    <input type="file" name="image" required>
+    <textarea name="story" placeholder="Write your story..." required></textarea>
     <button type="submit">Post Story</button>
 </form>
-<hr>
-<div style="padding: 2em;">
-  {% for story in stories %}
-    <div style="margin-bottom: 2em;">
-        <img src="{{ story.url }}" style="width: 60%; border-radius: 10px;"><br>
-        <p>{{ story.caption }}</p>
+
+<div class="story-grid">
+    {% for image_url, story_text in stories %}
+    <div class="story-item">
+        <img src="{{ image_url }}" alt="story image">
+        <p>{{ story_text }}</p>
     </div>
-  {% endfor %}
+    {% endfor %}
 </div>
+
+<style>
+.story-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+}
+.story-item {
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+}
+.story-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+.story-item p {
+    margin-top: 10px;
+    font-size: 16px;
+}
+textarea {
+    width: 100%;
+    height: 100px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+</style>
 {% endblock %}
+
 
 
 
