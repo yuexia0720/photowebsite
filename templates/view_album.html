@@ -1,11 +1,19 @@
 {% include 'navbar.html' %}
 
-<h1>{{ album_name }}</h1>
-<div style="display: flex; flex-wrap: wrap; gap: 20px;">
-  {% for url in image_urls %}
-    <img src="{{ url }}" style="width: 200px;">
-  {% endfor %}
-</div>
+{% extends "base.html" %}
+{% block content %}
+  <h1>{{ folder }} Album</h1>
+  <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+    {% for url in image_urls %}
+      <div>
+        <a href="{{ url }}" target="_blank">
+          <img src="{{ url }}" alt="Photo" style="width: 200px; height: auto;">
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}
+
 
 
 
