@@ -68,9 +68,19 @@ def upload():
 
     return render_template("upload.html")
 
-# Story 页面展示
-@app.route("/story", methods=["GET"])
+# Story 页面：上传 + 展示
+@app.route("/story", methods=["GET", "POST"])
 def story():
+    if request.method == 'POST':
+        image = request.files.get('image')
+        text = request.form.get('story', '')
+        if image and text:
+            cloudinary.uploader.upload(
+                image,
+                folder="story",
+                context={"caption": text}
+            )
+            return redirect(url_for("story"))
     try:
         stories = cloudinary.api.resources(type="upload", prefix="story")
         story_list = []
@@ -83,25 +93,8 @@ def story():
     except Exception as e:
         return f"Error loading stories: {str(e)}"
 
-# Post Story 逻辑
-@app.route('/story', methods=['GET', 'POST'])
-def story():
-    if request.method == 'POST':
-        image = request.files['image']
-        text = request.form['story']
-        if image and text:
-            upload_result = cloudinary.uploader.upload(image)
-            image_url = upload_result['secure_url']
-            # 保存为元组 (图片链接, 文字内容)
-            stories.append((image_url, text))
-            return redirect(url_for('story'))
-
-    return render_template('story.html', stories=stories)
-
 if __name__ == "__main__":
     app.run(debug=True)
-
-
 
 
 
