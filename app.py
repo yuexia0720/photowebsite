@@ -66,32 +66,34 @@ def upload():
 
     return render_template("upload.html")
 
-# Story 页面：上传和展示图片 + 文字
+# Story 页面展示与上传
 @app.route('/story', methods=['GET', 'POST'])
 def story():
     if request.method == 'POST':
+        if 'image' not in request.files or 'story' not in request.form:
+            return "Missing image or story", 400
         image = request.files['image']
-        caption = request.form.get('story', '')
+        text = request.form['story']
         if image:
-            try:
-                cloudinary.uploader.upload(image, folder="story", context={"caption": caption})
-                return redirect(url_for('story'))
-            except Exception as e:
-                return f"Upload failed: {str(e)}", 500
+            cloudinary.uploader.upload(
+                image,
+                folder="story",
+                context={"caption": text}
+            )
+        return redirect(url_for('story'))
 
-    # 显示 story 图片和文字
     try:
-        stories = cloudinary.api.resources(type="upload", prefix="story", context=True)
+        resources = cloudinary.api.resources(type="upload", prefix="story", context=True)
         story_list = []
-        for s in stories["resources"]:
+        for r in resources["resources"]:
             story_list.append({
-                "url": s["secure_url"],
-                "caption": s.get("context", {}).get("custom", {}).get("caption", "")
+                "url": r["secure_url"],
+                "caption": r.get("context", {}).get("custom", {}).get("caption", "")
             })
         return render_template("story.html", stories=story_list)
     except Exception as e:
         return f"Error loading stories: {str(e)}"
-
+    
 if __name__ == "__main__":
     app.run(debug=True)
 
