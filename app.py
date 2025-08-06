@@ -59,30 +59,29 @@ def upload():
         if photo.filename == '':
             return "No selected file", 400
         try:
-            upload_result = cloudinary.uploader.upload(photo)
-            image_url = upload_result['secure_url']
-            albums['Pittsburgh + Cook Forest'].append(image_url)
-            return redirect(url_for('album'))
+            cloudinary.uploader.upload(photo)
+            return redirect(url_for('albums'))
         except Exception as e:
             return f"Upload failed: {str(e)}", 500
 
     return render_template("upload.html")
 
-# Story 页面：上传 + 展示
-@app.route("/story", methods=["GET", "POST"])
+# Story 页面：上传和展示图片 + 文字
+@app.route('/story', methods=['GET', 'POST'])
 def story():
     if request.method == 'POST':
-        image = request.files.get('image')
-        text = request.form.get('story', '')
-        if image and text:
-            cloudinary.uploader.upload(
-                image,
-                folder="story",
-                context={"caption": text}
-            )
-            return redirect(url_for("story"))
+        image = request.files['image']
+        caption = request.form.get('story', '')
+        if image:
+            try:
+                cloudinary.uploader.upload(image, folder="story", context={"caption": caption})
+                return redirect(url_for('story'))
+            except Exception as e:
+                return f"Upload failed: {str(e)}", 500
+
+    # 显示 story 图片和文字
     try:
-        stories = cloudinary.api.resources(type="upload", prefix="story")
+        stories = cloudinary.api.resources(type="upload", prefix="story", context=True)
         story_list = []
         for s in stories["resources"]:
             story_list.append({
@@ -95,7 +94,6 @@ def story():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
 
 
 
