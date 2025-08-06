@@ -1,12 +1,40 @@
-{% extends "base.html" %}
-{% block content %}
-<h2 style="text-align:center;">Upload Image</h2>
-<form method="POST" enctype="multipart/form-data" style="text-align:center; margin-top: 2em;">
-    <input type="text" name="folder" placeholder="Album name (e.g. nature)" required><br><br>
-    <input type="file" name="image" required><br><br>
-    <button type="submit">Upload</button><br><br>
-    <a href="{{ url_for('album') }}">Go to Album Page</a>
-</form>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Photo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+            max-width: 600px;
+            margin: auto;
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            border: 1px solid #ccc;
+            padding: 2rem;
+            border-radius: 10px;
+        }
+        input[type="file"],
+        button {
+            display: block;
+            width: 100%;
+            margin: 1rem 0;
+            padding: 0.5rem;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Upload a Photo</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="photo" required>
+        <button type="submit">Upload</button>
+    </form>
+</body>
+</html>
 
 
