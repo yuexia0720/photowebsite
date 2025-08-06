@@ -68,6 +68,21 @@ def upload():
 
     return render_template("upload.html")
 
+# Story 页面展示
+@app.route("/story", methods=["GET"])
+def story():
+    try:
+        stories = cloudinary.api.resources(type="upload", prefix="story")
+        story_list = []
+        for s in stories["resources"]:
+            story_list.append({
+                "url": s["secure_url"],
+                "caption": s.get("context", {}).get("custom", {}).get("caption", "")
+            })
+        return render_template("story.html", stories=story_list)
+    except Exception as e:
+        return f"Error loading stories: {str(e)}"
+
 # Post Story 逻辑
 @app.route('/story', methods=['GET', 'POST'])
 def story():
@@ -83,7 +98,8 @@ def story():
 
     return render_template('story.html', stories=stories)
 
-
+if __name__ == "__main__":
+    app.run(debug=True)
 
 
 
