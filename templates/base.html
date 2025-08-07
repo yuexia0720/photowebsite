@@ -2,16 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}My Photo Gallery{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>{% block title %}My Lens{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-
-    {% include 'navbar.html' %}
-
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+            <li><a href="{{ url_for('album') }}">Album</a></li>
+            <li><a href="{{ url_for('story') }}">Story</a></li>
+        </ul>
+    </nav>
     <div class="content">
         {% block content %}{% endblock %}
     </div>
-
 </body>
 </html>
+
