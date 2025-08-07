@@ -33,10 +33,9 @@
 
 /* Homepage main title styling */
 .hero-title {
-    font-size: 4rem;         /* 更大字体 */
-    font-weight: bold;       /* 粗体 */
-    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4); /* 阴影 */
-    text-align: center;
-    margin-top: 50px;
-    margin-bottom: 30px;
+    font-size: 80px;     /* 更大 */
+    font-weight: bold;   /* 加粗 */
+    color: white;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.6); /* 阴影 */
 }
+
