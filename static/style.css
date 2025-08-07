@@ -1,3 +1,27 @@
+.navbar {
+    background-color: #333;
+    padding: 10px 20px;
+}
+
+.navbar-menu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex; /* 横向排列 */
+    justify-content: center;
+    gap: 20px;
+}
+
+.navbar-menu li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.navbar-menu li a:hover {
+    text-decoration: underline;
+}
+
 /* Homepage main title styling */
 .hero-title {
     font-size: 80px;     /* 更大 */
