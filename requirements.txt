@@ -14,9 +14,3 @@ requests==2.32.4
 six==1.17.0
 urllib3==2.5.0
 Werkzeug==3.1.3
-Flask
-<<<<<<< HEAD
-cloudinary
-=======
-Cloudinary
->>>>>>> 683f55bfdab1562c8cee23ed1dda118305739d20
