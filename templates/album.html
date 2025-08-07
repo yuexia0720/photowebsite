@@ -1,0 +1,27 @@
+{% include 'navbar.html' %}
+
+<h1>Albums</h1>
+<div style="display: flex; flex-wrap: wrap; gap: 20px;">
+  {% for album in albums %}
+    <div style="text-align: center;">
+      <a href="{{ url_for('view_album', album_name=album.name) }}">
+        {% if album.cover %}
+          <img src="{{ album.cover }}" alt="{{ album.name }}" style="width: 200px; height: 200px; object-fit: cover;">
+        {% else %}
+          <div style="width: 200px; height: 200px; background: #ccc;">No cover</div>
+        {% endif %}
+        <p>{{ album.name }}</p>
+      </a>
+    </div>
+  {% endfor %}
+</div>
+
+
+
+
+
+
+
+
+
+
