@@ -59,7 +59,7 @@ def view_album(album_name):
     except Exception as e:
         return f"Error loading album: {str(e)}"
 
-# ===== Story 页面 =====
+# Story 页面 
 stories = []
 
 @app.route("/story", methods=["GET", "POST"])
@@ -77,7 +77,7 @@ def story():
             return f"Upload error: {str(e)}"
     return render_template("story.html", stories=stories)
 
-# ===== Upload 页面（创建文件夹并上传） =====
+# Upload 页面（创建文件夹并上传） 
 @app.route("/upload", methods=["GET", "POST"])
 def upload():
     if request.method == "POST":
