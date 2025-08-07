@@ -1,22 +1,27 @@
 <!-- templates/about.html -->
-{% extends "base.html" %}
+{% extends 'base.html' %}
+
+{% block title %}About{% endblock %}
 
 {% block content %}
-<div class="max-w-6xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-  <!-- 左侧文字内容 -->
-  <div>
-    <h2 class="text-3xl md:text-4xl font-bold mb-6">About Me</h2>
-    <p class="text-lg leading-relaxed max-w-prose">
+<div class="about-container">
+  <div class="about-text">
+    <p>
       Hi, I’m Xia.<br><br>
-      I’m a photography enthusiast from China, currently at the beginning of my journey behind the lens. I have a deep passion for capturing people, nature, and the beauty of fleeting moments. Through my photos, I aim to freeze time, preserve memories, and celebrate the simple joys of life.<br><br>
-      This website is not only a collection of my favorite shots, but also a visual diary of my growth as a photographer. I hope my work brings you a sense of beauty and inspiration—let’s embrace the magic in every moment, together.
+      I’m a photography enthusiast from China, currently at the beginning<br>
+      of my journey behind the lens. I have a deep passion for capturing<br>
+      people, nature, and the beauty of fleeting moments. Through my photos,<br>
+      I aim to freeze time, preserve memories, and celebrate the simple joys<br>
+      of life.<br><br>
+      This website is not only a collection of my favorite shots, but also a<br>
+      visual diary of my growth as a photographer. I hope my work brings you<br>
+      a sense of beauty and inspiration—let’s embrace the magic in every<br>
+      moment, together.
     </p>
   </div>
-
-  <!-- 右侧图片区域 -->
-  <div class="flex flex-col space-y-6">
-    <img src="https://res.cloudinary.com/dpr0pl2tf/image/upload/v1754343392/pexels-samuel-walker-15032-569098_wm1kxg.jpg" alt="Portrait" class="rounded-2xl shadow-lg w-full h-auto object-cover">
-    <img src="https://res.cloudinary.com/dpr0pl2tf/image/upload/v1754516887/WechatIMG74_wxzsrb.jpg" alt="Second Portrait" class="rounded-2xl shadow-lg w-full h-auto object-cover">
+  <div class="about-images">
+    <img src="https://res.cloudinary.com/dpr0pl2tf/image/upload/v1754343392/pexels-samuel-walker-15032-569098_wm1kxg.jpg" alt="Xia" />
+    <img src="https://res.cloudinary.com/dpr0pl2tf/image/upload/v1754516887/WechatIMG74_wxzsrb.jpg" alt="Xia 2" />
   </div>
 </div>
 {% endblock %}
