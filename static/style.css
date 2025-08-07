@@ -1,42 +1,18 @@
-.navbar {
-    background-color: #333;
-    padding: 10px 20px;
-}
-
-.navbar-menu {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: flex; /* 横向排列 */
-    justify-content: center;
-    gap: 20px;
-}
-
-.navbar-menu li a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.navbar-menu li a:hover {
-    text-decoration: underline;
-}
-
-/* Homepage main title styling */
+/* 首页主标题样式 */
 .hero-title {
-    font-size: 80px;     /* 更大 */
-    font-weight: bold;   /* 加粗 */
+    font-size: 80px;
+    font-weight: bold;
     color: white;
-    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.6); /* 阴影 */
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.6);
 }
 
-/* About page layout */
+/* About 页面样式 */
 .about-container {
     display: flex;
     justify-content: center;
     align-items: flex-start;
     gap: 40px;
-    padding: 40px;
+    padding: 60px;
     flex-wrap: wrap;
 }
 
@@ -44,10 +20,9 @@
     background-color: #f0f0f0;
     border-radius: 20px;
     padding: 30px;
-    max-width: 350px;
-    min-height: 400px;
+    width: 350px;
     font-size: 16px;
-    line-height: 1.6;
+    line-height: 1.8;
     box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
     word-break: break-word;
     flex-shrink: 0;
@@ -60,8 +35,38 @@
 }
 
 .about-images img {
-    max-width: 350px;
+    width: 350px;
     height: auto;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* 顶部导航栏样式 */
+.navbar {
+    background-color: #333;
+    padding: 10px 20px;
+}
+
+.navbar-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.navbar-menu li {
+    display: inline;
+}
+
+.navbar-menu li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.navbar-menu li a:hover {
+    text-decoration: underline;
 }
