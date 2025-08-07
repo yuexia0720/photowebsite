@@ -1,3 +1,11 @@
+/* Homepage main title styling */
+.hero-title {
+    font-size: 80px;     /* 更大 */
+    font-weight: bold;   /* 加粗 */
+    color: white;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.6); /* 阴影 */
+}
+
 /* About page layout */
 .about-container {
     display: flex;
@@ -33,12 +41,3 @@
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
-
-/* Homepage main title styling */
-.hero-title {
-    font-size: 80px;     /* 更大 */
-    font-weight: bold;   /* 加粗 */
-    color: white;
-    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.6); /* 阴影 */
-}
-
