@@ -34,9 +34,10 @@
 
 /* Homepage main title styling */
 .hero-title {
-    font-size: 64px;
-    font-weight: bold;
-    text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
-    margin-bottom: 20px;
+    font-size: 4rem;         /* 更大字体 */
+    font-weight: bold;       /* 粗体 */
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4); /* 阴影 */
     text-align: center;
+    margin-top: 50px;
+    margin-bottom: 30px;
 }
