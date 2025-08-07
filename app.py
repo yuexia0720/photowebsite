@@ -16,24 +16,17 @@ cloudinary.config(
 # 首页
 @app.route("/")
 def index():
-<<<<<<< HEAD
-    image_urls = [
-        "https://res.cloudinary.com/dpr0pl2tf/image/upload/v1753816843/WechatIMG2_mzsnw2.jpg",
-    ]
-    return render_template('index.html', image_urls=image_urls)
-
-
+    # 这是你之前本地的首页图片代码，如果不需要可以改成下一行的return
+    # image_urls = [
+    #     "https://res.cloudinary.com/dpr0pl2tf/image/upload/v1753816843/WechatIMG2_mzsnw2.jpg",
+    # ]
+    # return render_template('index.html', image_urls=image_urls)
+    
+    return render_template("index.html")
 
 @app.route("/gallery")
 def gallery():
     return render_template("gallery.html")
-
-if __name__ == "__main__":
-    app.run()
-
-=======
-    return render_template("index.html")
->>>>>>> 683f55bfdab1562c8cee23ed1dda118305739d20
 
 # About 页面
 @app.route("/about")
@@ -88,20 +81,27 @@ def story():
 @app.route("/upload", methods=["GET", "POST"])
 def upload():
     if request.method == "POST":
-        photo = request.files["photo"]
+        photo = request.files.get("photo")
         folder = request.form.get("folder")
 
-        if photo and folder:
-            try:
-                upload_result = cloudinary.uploader.upload(
-                    photo,
-                    folder=folder  # Cloudinary will create folder if not exists
-                )
-                return redirect(url_for("upload"))
-            except Exception as e:
-                return f"Error uploading file: {str(e)}"
+        if not photo:
+            return "No photo file part", 400
+        if photo.filename == '':
+            return "No selected photo file", 400
+        if not folder:
+            return "Folder name is required", 400
+
+        try:
+            upload_result = cloudinary.uploader.upload(
+                photo,
+                folder=folder  # Cloudinary会自动创建不存在的文件夹
+            )
+            return redirect(url_for("upload"))
+        except Exception as e:
+            return f"Error uploading file: {str(e)}"
 
     return render_template("upload.html")
 
-
+if __name__ == "__main__":
+    app.run(debug=True)
 
