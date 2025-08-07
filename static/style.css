@@ -39,11 +39,22 @@ body {
     text-align: center;
 }
 
+.homepage-hero {
+    height: 100vh;  /* 整个屏幕高度 */
+    background-image: url("https://res.cloudinary.com/dpr0pl2tf/image/upload/v1754343393/pexels-caio-69969_aq5kzz.jpg");
+    background-size: cover;  /* 背景图铺满 */
+    background-position: center center; /* 居中显示 */
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;      /* 垂直居中 */
+    justify-content: center;  /* 水平居中 */
+}
 .main-title {
-    font-size: 64px;
-    font-weight: bold;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
-    margin-bottom: 30px;
+    font-size: 128px;          /* 原64px放大一倍 */
+    font-weight: 900;          /* 更粗 */
+    color: white;              /* 白色 */
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7); /* 阴影保留 */
+    margin-bottom: 0;          /* 取消底部外边距 */
 }
 
 .main-image {
