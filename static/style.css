@@ -37,23 +37,26 @@ body {
     text-align: center;
 }
 
-.homepage-hero {
-    height: 100vh;  /* 整个屏幕高度 */
-    background-image: url("https://res.cloudinary.com/dpr0pl2tf/image/upload/v1754343393/pexels-caio-69969_aq5kzz.jpg");
-    background-size: cover;  /* 背景图铺满 */
-    background-position: center center; /* 居中显示 */
+/* 首页全屏背景 */
+.hero {
+    background-image: url('https://res.cloudinary.com/dpr0pl2tf/image/upload/v1754343393/pexels-caio-69969_aq5kzz.jpg');
+    background-size: cover;
+    background-position: center;
     background-repeat: no-repeat;
+    width: 100%;
+    height: 100vh; /* 全屏高度 */
     display: flex;
-    align-items: center;      /* 垂直居中 */
-    justify-content: center;  /* 水平居中 */
+    justify-content: center;
+    align-items: center;
 }
 
-.main-title {
-    font-size: 128px;          /* 原64px放大一倍 */
-    font-weight: 900;          /* 更粗 */
-    color: white;              /* 白色 */
-    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7); /* 阴影保留 */
-    margin-bottom: 0;          /* 取消底部外边距 */
+/* 首页大标题样式 */
+.hero-title {
+    color: white;
+    font-size: 6rem; /* 比原来大一倍左右 */
+    font-weight: bold;
+    text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+    margin: 0;
 }
 
 .main-image {
@@ -87,15 +90,15 @@ body {
     word-wrap: break-word;
 }
 
-.about-images {
+/* About 页面右侧图片缩小 15% 并上下摆放 */
+.about-right {
     display: flex;
-    flex-direction: column; /* 垂直排列 */
+    flex-direction: column;
+    align-items: center;
     gap: 20px;
-    flex: 1;
 }
 
-.about-images img {
-    width: 85%;
+.about-right img {
+    width: 85%; /* 缩小 15% */
     height: auto;
-    border-radius: 10px;
 }
