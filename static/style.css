@@ -1,22 +1,27 @@
-body {
-    font-family: Arial, sans-serif;
+/* 通用样式 */
+body, html {
     margin: 0;
     padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
 }
 
+/* 导航栏 */
 .navbar {
     background-color: #333;
-    padding: 10px 0;
+    padding: 10px 20px;
 }
 
 .navbar-menu {
-    display: flex !important;
-    justify-content: center;
-    align-items: center;
     list-style: none;
-    padding: 0;
+    display: flex;
+    justify-content: center;
     margin: 0;
-    gap: 20px;
+    padding: 0;
+}
+
+.navbar-menu li {
+    margin: 0 15px;
 }
 
 .navbar-menu li a {
@@ -29,55 +34,55 @@ body {
     text-decoration: underline;
 }
 
-.content {
-    padding: 30px;
-}
-
+/* 首页 */
 .homepage {
-    text-align: center;
-}
-
-/* 首页全屏背景 */
-.hero {
-    background-image: url('https://res.cloudinary.com/dpr0pl2tf/image/upload/v1754343393/pexels-caio-69969_aq5kzz.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    width: 100%;
-    height: 100vh; /* 全屏高度 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* 首页大标题样式 */
-.hero-title {
+    position: relative;
+    height: 100vh;  /* 视窗高度，确保满屏 */
     color: white;
-    font-size: 6rem; /* 比原来大一倍左右 */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: black;
+}
+
+.main-title {
+    font-size: 128px;  /* 放大一倍 */
     font-weight: bold;
-    text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
-    margin: 0;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+    margin-bottom: 20px;
+    z-index: 2;
+}
+
+.main-image-container {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    overflow: hidden;
+    z-index: 1;
 }
 
 .main-image {
-    width: 80%;
-    max-width: 1000px;
-    border-radius: 10px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.6);  /* 调暗图片让文字更突出 */
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
+/* About 页面 */
 .about-container {
     display: flex;
-    align-items: flex-start;
+    flex-wrap: wrap;
     gap: 30px;
+    padding: 30px;
+    justify-content: center;
 }
 
 .about-text {
-    flex: 1;
-    background: rgba(255, 255, 255, 0.8);
-    padding: 20px;
-    border-radius: 15px;
-    line-height: 1.6;
-    max-width: 400px;
+    flex: 1 1 300px;
+    max-width: 450px;
 }
 
 .text-box {
@@ -86,19 +91,21 @@ body {
     border-radius: 15px;
     font-size: 18px;
     line-height: 1.6;
-    max-width: 400px;
     word-wrap: break-word;
 }
 
-/* About 页面右侧图片缩小 15% 并上下摆放 */
-.about-right {
+.about-images {
+    flex: 1 1 300px;
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: 20px;
+    align-items: center;
+    max-width: 450px;
 }
 
-.about-right img {
-    width: 85%; /* 缩小 15% */
-    height: auto;
+.about-image {
+    width: 100%;
+    border-radius: 10px;
+    max-height: 300px;
+    object-fit: cover;
 }
