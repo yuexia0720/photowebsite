@@ -1,4 +1,5 @@
-{% extends "base.html" %}
+{% include 'navbar.html' %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 {% block title %}Home - My Lens{% endblock %}
 {% block content %}
 <div class="homepage-hero">
