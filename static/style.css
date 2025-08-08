@@ -65,18 +65,17 @@ body {
 
 .about-container {
     display: flex;
-    justify-content: center;
     align-items: flex-start;
-    gap: 20px;  /* 从40改成20，减少间距 */
-    padding: 40px;
-    flex-wrap: wrap;
-    max-width: 1100px; /* 限制最大宽度，避免太宽产生空白 */
-    margin: 0 auto;
+    gap: 30px;
 }
 
 .about-text {
     flex: 1;
-    min-width: 280px;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 15px;
+    line-height: 1.6;
+    max-width: 400px;
 }
 
 .text-box {
@@ -89,15 +88,15 @@ body {
     word-wrap: break-word;
 }
 
-.about-images img {
-    max-width: 350px; /* 从300改大 */
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+.about-images {
+    display: flex;
+    flex-direction: column; /* 垂直排列 */
+    gap: 20px;
+    flex: 1;
 }
 
-.about-image {
+.about-images img {
     width: 100%;
-    max-width: 400px;
+    height: auto;
     border-radius: 10px;
 }
