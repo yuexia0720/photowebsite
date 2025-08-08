@@ -52,6 +52,7 @@ body, html {
     text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
     margin-bottom: 20px;
     z-index: 2;
+    margin-top: -20px;  /* 往上移20px，根据需要调整 */
 }
 
 .main-image-container {
