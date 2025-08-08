@@ -1,8 +1,14 @@
-{% include 'navbar.html' %}
+{% extends "base.html" %}
+{% block title %}Home - My Lens{% endblock %}
 
-<div class="hero">
-    <h1 class="hero-title">My Lens</h1>
+{% block content %}
+<div class="homepage">
+    <h1 class="main-title">My Lens</h1>
+    <div class="main-image-container">
+        <img src="https://res.cloudinary.com/dpr0pl2tf/image/upload/v1754343393/pexels-caio-69969_aq5kzz.jpg" alt="Homepage Image" class="main-image">
+    </div>
 </div>
+{% endblock %}
 
 
 
