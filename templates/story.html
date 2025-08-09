@@ -1,30 +1,35 @@
-{% include 'navbar.html' %}
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+{% extends "base.html" %}
 
+{% block content %}
 <h1>Photo Stories</h1>
 
 {% if logged_in %}
-  <form method="post" enctype="multipart/form-data" style="margin-bottom: 30px;">
-    <label>Story Image</label><br>
-    <input type="file" name="image" required><br><br>
+<form method="POST" enctype="multipart/form-data" action="{{ url_for('story') }}">
+    <label for="image">Story Image:</label><br/>
+    <input type="file" id="image" name="image" required /><br/><br/>
 
-    <label>Caption</label><br>
-    <textarea name="caption" required style="width: 100%; height: 80px;"></textarea><br><br>
+    <label for="caption">Caption:</label><br/>
+    <textarea id="caption" name="caption" rows="3" required></textarea><br/><br/>
 
     <button type="submit">Upload</button>
-  </form>
+</form>
 {% else %}
-  <p>You do not have permission to upload stories. Please <a href="{{ url_for('login') }}">login</a> if you have an account.</p>
+<p>You need to <a href="{{ url_for('login') }}">login</a> to upload stories.</p>
 {% endif %}
 
-<div style="display: flex; flex-wrap: wrap; gap: 20px;">
-  {% for story in stories %}
-    <div style="width: 300px; border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
-      <img src="{{ story.image_url }}" alt="Story image" style="width: 100%; border-radius: 5px;">
-      <p style="margin-top: 10px;">{{ story.caption }}</p>
-    </div>
-  {% endfor %}
+<hr />
+
+<div style="display:flex; flex-wrap: wrap; gap: 20px; margin-top: 20px;">
+    {% for story in stories %}
+        <div style="width: 300px;">
+            <img src="{{ story.image_url }}" alt="Story image" style="width: 100%; border-radius: 8px;" />
+            <p>{{ story.caption }}</p>
+        </div>
+    {% else %}
+        <p>No stories yet.</p>
+    {% endfor %}
 </div>
+{% endblock %}
 
 
 
