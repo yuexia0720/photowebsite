@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
     <nav class="navbar">
@@ -12,6 +12,11 @@
             <li><a href="{{ url_for('albums') }}">Album</a></li>
             <li><a href="{{ url_for('story') }}">Story</a></li>
             <li><a href="{{ url_for('upload') }}">Upload</a></li>
+            {% if not logged_in %}
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+            {% else %}
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            {% endif %}
         </ul>
     </nav>
     <div class="content">
