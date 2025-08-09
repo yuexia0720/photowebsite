@@ -23,22 +23,13 @@ def auto_login_with_secret():
     protected_paths = ["/upload", "/story"]
     path = request.path
 
-    # 初始化标记，代表当前请求是否管理员免登录访问
-    g.is_admin_request = False
-
     if any(path.startswith(p) for p in protected_paths):
-        # 如果已登录，直接放行
         if session.get("logged_in"):
             return
-
-        # 检查URL参数admin_key
         admin_key = request.args.get("admin_key")
         if admin_key and admin_key == ADMIN_SECRET:
-            # 标记当前请求是管理员免登录访问（不修改 session）
-            g.is_admin_request = True
+            session["logged_in"] = True
             return
-
-        # 否则跳转登录页面
         if path != "/login":
             return redirect(url_for("login"))
 
@@ -115,11 +106,9 @@ stories = []
 @app.route("/story", methods=["GET", "POST"])
 def story():
     global stories
-    # 判断权限：登录或者管理员免登录
-    if not session.get("logged_in") and not getattr(g, "is_admin_request", False):
-        return redirect(url_for("login"))
-
     if request.method == "POST":
+        if not session.get("logged_in"):
+            return "你没有权限上传故事内容", 403
         try:
             image = request.files["image"]
             caption = request.form["caption"]
@@ -129,34 +118,28 @@ def story():
             return redirect(url_for("story"))
         except Exception as e:
             return f"Upload error: {str(e)}"
-    
     return render_template("story.html", stories=stories, logged_in=session.get("logged_in"))
 
 # Upload 页面
 @app.route("/upload", methods=["GET", "POST"])
 def upload():
-    # 判断权限：登录或者管理员免登录
-    if not session.get("logged_in") and not getattr(g, "is_admin_request", False):
+    if not session.get("logged_in"):
         return redirect(url_for("login"))
-
     if request.method == "POST":
         photo = request.files.get("photo")
         folder = request.form.get("folder")
-
         if not photo:
             return "No photo file part", 400
         if photo.filename == '':
             return "No selected photo file", 400
         if not folder:
             return "Folder name is required", 400
-
         try:
             cloudinary.uploader.upload(photo, folder=folder)
             return redirect(url_for("upload"))
         except Exception as e:
             return f"Error uploading file: {str(e)}"
-
-    return render_template("upload.html")
+    return render_template("upload.html", logged_in=session.get("logged_in"))
 
 if __name__ == "__main__":
     app.run(debug=True)
