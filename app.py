@@ -22,7 +22,7 @@ def login():
         password = request.form["password"]
 
         # 简单验证，改成你自己的用户名和密码
-        if username == "admin" and password == "123456":
+        if username == "xia0720" and password == "qq123456":
             session["logged_in"] = True
             return redirect(url_for("story"))
         else:
