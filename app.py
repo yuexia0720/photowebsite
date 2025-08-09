@@ -27,7 +27,7 @@ def login():
             return redirect(url_for("story"))
         else:
             return "用户名或密码错误"
-    return render_template("login.html")
+    return render_template("login.html", logged_in=session.get("logged_in"))
 
 # 登出
 @app.route("/logout")
