@@ -1,6 +1,8 @@
 {% include 'navbar.html' %}
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <h1>Photo Stories</h1>
+
+{% if logged_in %}
 <form method="post" enctype="multipart/form-data">
   <label>Story Image</label>
   <input type="file" name="image" required><br>
@@ -8,6 +10,7 @@
   <textarea name="caption" required></textarea><br>
   <button type="submit">Upload</button>
 </form>
+{% endif %}
 
 <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 30px;">
   {% for story in stories %}
