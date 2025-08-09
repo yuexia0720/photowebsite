@@ -84,7 +84,6 @@ def view_album(album_name):
         return f"Error loading album: {str(e)}"
 
 # Story 页面 
-# Story 页面 
 stories = []
 
 @app.route("/story", methods=["GET", "POST"])
