@@ -14,7 +14,7 @@ cloudinary.config(
     api_secret='9o-PlPBRQzQPfuVCQfaGrUV3_IE'
 )
 
-YOUR_IP = "https://whatismyipaddress.com/"  # <-- 把这里改成你的公网IP
+YOUR_IP = "67.163.173.185 "  # <-- 把这里改成你的公网IP
 
 # 登录页面
 @app.route("/login", methods=["GET", "POST"])
