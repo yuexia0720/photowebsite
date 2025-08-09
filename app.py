@@ -112,6 +112,9 @@ def story():
 # Upload 页面（创建文件夹并上传） 
 @app.route("/upload", methods=["GET", "POST"])
 def upload():
+    if not session.get("logged_in"):  # 没登录就禁止访问
+        return redirect(url_for("login"))
+
     if request.method == "POST":
         photo = request.files.get("photo")
         folder = request.form.get("folder")
