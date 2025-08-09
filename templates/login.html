@@ -1,16 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Login</h1>
-<form method="POST" action="{{ url_for('login') }}">
-    <label for="username">Username:</label><br/>
-    <input type="text" id="username" name="username" required /><br/><br/>
-
-    <label for="password">Password:</label><br/>
-    <input type="password" id="password" name="password" required /><br/><br/>
-
-    <button type="submit">Login</button>
-</form>
+<div class="container mt-4">
+    <h2>Login</h2>
+    {% if logged_in %}
+        <p>You are already logged in. <a href="{{ url_for('logout') }}">Logout</a></p>
+    {% else %}
+        <form method="POST" action="{{ url_for('login') }}">
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" name="username" id="username" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" name="password" id="password" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+    {% endif %}
+</div>
 {% endblock %}
 
 
