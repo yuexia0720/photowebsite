@@ -14,6 +14,8 @@ cloudinary.config(
     api_secret='9o-PlPBRQzQPfuVCQfaGrUV3_IE'
 )
 
+YOUR_IP = "https://whatismyipaddress.com/"  # <-- 把这里改成你的公网IP
+
 # 登录页面
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -82,13 +84,17 @@ def view_album(album_name):
         return f"Error loading album: {str(e)}"
 
 # Story 页面 
-stories = stories = []
+# Story 页面 
+stories = []
 
 @app.route("/story", methods=["GET", "POST"])
 def story():
     global stories
+    user_ip = request.remote_addr
+    can_upload = session.get("logged_in") or (user_ip == YOUR_IP)
+
     if request.method == "POST":
-        if not session.get("logged_in"):  # 没登录就禁止上传
+        if not can_upload:
             return "你没有权限上传故事内容", 403
         try:
             image = request.files["image"]
@@ -100,16 +106,15 @@ def story():
         except Exception as e:
             return f"Upload error: {str(e)}"
     
-    return render_template(
-        "story.html",
-        stories=stories,
-        logged_in=session.get("logged_in")  # 关键是这里要传
-    )
+    return render_template("story.html", stories=stories, logged_in=can_upload)
 
 # Upload 页面（创建文件夹并上传） 
 @app.route("/upload", methods=["GET", "POST"])
 def upload():
-    if not session.get("logged_in"):  # 没登录就禁止访问
+    user_ip = request.remote_addr
+    can_upload = session.get("logged_in") or (user_ip == YOUR_IP)
+
+    if not can_upload:
         return redirect(url_for("login"))
 
     if request.method == "POST":
@@ -126,7 +131,7 @@ def upload():
         try:
             upload_result = cloudinary.uploader.upload(
                 photo,
-                folder=folder  # Cloudinary会自动创建不存在的文件夹
+                folder=folder
             )
             return redirect(url_for("upload"))
         except Exception as e:
