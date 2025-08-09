@@ -88,6 +88,10 @@ stories = []
 def story():
     global stories
     if request.method == "POST":
+        # 只有登录用户可以上传
+        if not session.get("logged_in"):
+            return "你没有权限上传故事内容", 403
+
         try:
             image = request.files["image"]
             caption = request.form["caption"]
@@ -97,7 +101,8 @@ def story():
             return redirect(url_for("story"))
         except Exception as e:
             return f"Upload error: {str(e)}"
-    return render_template("story.html", stories=stories)
+    
+    return render_template("story.html", stories=stories, logged_in=session.get("logged_in"))
 
 # Upload 页面（创建文件夹并上传） 
 @app.route("/upload", methods=["GET", "POST"])
