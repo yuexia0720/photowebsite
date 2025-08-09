@@ -17,7 +17,7 @@ cloudinary.config(
 # 管理员免登录秘钥（可改成复杂点）
 ADMIN_SECRET = "superxia0720"
 
-# 统一前置处理，判断是否自动登录，但不持久化session
+# 统一前置处理，判断是否自动登录
 @app.before_request
 def auto_login_with_secret():
     protected_paths = ["/upload", "/story"]
@@ -25,11 +25,16 @@ def auto_login_with_secret():
 
     if any(path.startswith(p) for p in protected_paths):
         if session.get("logged_in"):
+            # 已登录，放行
             return
+
+        # 尝试通过URL参数admin_key自动登录
         admin_key = request.args.get("admin_key")
         if admin_key and admin_key == ADMIN_SECRET:
             session["logged_in"] = True
             return
+
+        # 其余情况跳转登录页
         if path != "/login":
             return redirect(url_for("login"))
 
@@ -40,19 +45,19 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
 
-        # 简单验证，改成你自己的用户名和密码
         if username == "xia0720" and password == "qq123456":
             session["logged_in"] = True
             return redirect(url_for("story"))
         else:
-            return "用户名或密码错误"
-    return render_template("login.html", logged_in=session.get("logged_in"))
+            return "用户名或密码错误", 401
+
+    return render_template("login.html", logged_in=session.get("logged_in", False))
 
 # 登出
 @app.route("/logout")
 def logout():
     session.pop("logged_in", None)
-    return redirect(url_for("story"))
+    return redirect(url_for("index"))
     
 # 首页
 @app.route("/")
@@ -82,11 +87,10 @@ def albums():
         albums = []
         for folder in folders.get('folders', []):
             subfolder_name = folder['name']
-            # 获取每个相册的第一张图片作为封面
             resources = cloudinary.api.resources(type="upload", prefix=subfolder_name, max_results=1)
             cover_url = resources['resources'][0]['secure_url'] if resources['resources'] else ""
             albums.append({'name': subfolder_name, 'cover': cover_url})
-        return render_template("album.html", albums=albums)
+        return render_template("album.html", albums=albums, logged_in=session.get("logged_in", False))
     except Exception as e:
         return f"Error fetching albums: {str(e)}"
 
@@ -96,11 +100,11 @@ def view_album(album_name):
     try:
         resources = cloudinary.api.resources(type="upload", prefix=album_name)
         image_urls = [img["secure_url"] for img in resources["resources"]]
-        return render_template("view_album.html", album_name=album_name, image_urls=image_urls)
+        return render_template("view_album.html", album_name=album_name, image_urls=image_urls, logged_in=session.get("logged_in", False))
     except Exception as e:
         return f"Error loading album: {str(e)}"
 
-# Story 页面 
+# Story 页面
 stories = []
 
 @app.route("/story", methods=["GET", "POST"])
@@ -118,28 +122,34 @@ def story():
             return redirect(url_for("story"))
         except Exception as e:
             return f"Upload error: {str(e)}"
-    return render_template("story.html", stories=stories, logged_in=session.get("logged_in"))
+
+    return render_template("story.html", stories=stories, logged_in=session.get("logged_in", False))
 
 # Upload 页面
 @app.route("/upload", methods=["GET", "POST"])
 def upload():
     if not session.get("logged_in"):
         return redirect(url_for("login"))
+
     if request.method == "POST":
         photo = request.files.get("photo")
         folder = request.form.get("folder")
+
         if not photo:
             return "No photo file part", 400
         if photo.filename == '':
             return "No selected photo file", 400
         if not folder:
             return "Folder name is required", 400
+
         try:
             cloudinary.uploader.upload(photo, folder=folder)
             return redirect(url_for("upload"))
         except Exception as e:
             return f"Error uploading file: {str(e)}"
-    return render_template("upload.html", logged_in=session.get("logged_in"))
+
+    return render_template("upload.html", logged_in=session.get("logged_in", False))
+
 
 if __name__ == "__main__":
     app.run(debug=True)
