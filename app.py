@@ -37,7 +37,7 @@ def auto_login_with_secret():
 
         # 否则跳转到登录页面
         if path != "/login":
-            return redirect(url_for("login")）
+            return redirect(url_for("login"))
 
 # 登录页面
 @app.route("/login", methods=["GET", "POST"])
