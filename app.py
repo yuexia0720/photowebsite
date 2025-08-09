@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 import os
 
 app = Flask(__name__)
+app.secret_key = "xia0720"  # 用于 session 加密
 
 # 配置 Cloudinary
 cloudinary.config(
@@ -13,6 +14,27 @@ cloudinary.config(
     api_secret='9o-PlPBRQzQPfuVCQfaGrUV3_IE'
 )
 
+# 登录页面
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+
+        # 简单验证，改成你自己的用户名和密码
+        if username == "admin" and password == "123456":
+            session["logged_in"] = True
+            return redirect(url_for("story"))
+        else:
+            return "用户名或密码错误"
+    return render_template("login.html")
+
+# 登出
+@app.route("/logout")
+def logout():
+    session.pop("logged_in", None)
+    return redirect(url_for("story"))
+    
 # 首页
 @app.route("/")
 def index():
