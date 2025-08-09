@@ -17,25 +17,28 @@ cloudinary.config(
 # 管理员免登录秘钥（可改成复杂点）
 ADMIN_SECRET = "superxia0720"
 
-# 统一前置处理，判断是否自动登录
+# 统一前置处理，判断是否自动登录，但不持久化session
 @app.before_request
 def auto_login_with_secret():
-    # 需要权限的页面路径列表（以 /upload 和 /story 开头）
     protected_paths = ["/upload", "/story"]
     path = request.path
+
+    # 初始化标记，代表当前请求是否管理员免登录访问
+    g.is_admin_request = False
 
     if any(path.startswith(p) for p in protected_paths):
         # 如果已登录，直接放行
         if session.get("logged_in"):
             return
 
-        # 尝试通过URL参数admin_key自动登录
+        # 检查URL参数admin_key
         admin_key = request.args.get("admin_key")
         if admin_key and admin_key == ADMIN_SECRET:
-            session["logged_in"] = True
+            # 标记当前请求是管理员免登录访问（不修改 session）
+            g.is_admin_request = True
             return
 
-        # 否则跳转到登录页面
+        # 否则跳转登录页面
         if path != "/login":
             return redirect(url_for("login"))
 
@@ -112,9 +115,11 @@ stories = []
 @app.route("/story", methods=["GET", "POST"])
 def story():
     global stories
+    # 判断权限：登录或者管理员免登录
+    if not session.get("logged_in") and not getattr(g, "is_admin_request", False):
+        return redirect(url_for("login"))
+
     if request.method == "POST":
-        if not session.get("logged_in"):
-            return "你没有权限上传故事内容", 403
         try:
             image = request.files["image"]
             caption = request.form["caption"]
@@ -124,12 +129,14 @@ def story():
             return redirect(url_for("story"))
         except Exception as e:
             return f"Upload error: {str(e)}"
+    
     return render_template("story.html", stories=stories, logged_in=session.get("logged_in"))
 
-# Upload 页面（创建文件夹并上传） 
+# Upload 页面
 @app.route("/upload", methods=["GET", "POST"])
 def upload():
-    if not session.get("logged_in"):
+    # 判断权限：登录或者管理员免登录
+    if not session.get("logged_in") and not getattr(g, "is_admin_request", False):
         return redirect(url_for("login"))
 
     if request.method == "POST":
@@ -144,7 +151,7 @@ def upload():
             return "Folder name is required", 400
 
         try:
-            upload_result = cloudinary.uploader.upload(photo, folder=folder)
+            cloudinary.uploader.upload(photo, folder=folder)
             return redirect(url_for("upload"))
         except Exception as e:
             return f"Error uploading file: {str(e)}"
@@ -153,4 +160,3 @@ def upload():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
