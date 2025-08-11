@@ -1,40 +1,30 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container mt-4">
-    <h2>Stories</h2>
+<h2 style="text-align:center; margin-top:20px;">Stories</h2>
 
-    {% if logged_in %}
-    <form method="POST" enctype="multipart/form-data">
-        <div class="mb-3">
-            <label for="image" class="form-label">Upload Image</label>
-            <input type="file" name="image" id="image" class="form-control" required>
-        </div>
-        <div class="mb-3">
-            <label for="caption" class="form-label">Caption</label>
-            <textarea name="caption" id="caption" class="form-control" rows="2" required></textarea>
-        </div>
-        <button type="submit" class="btn btn-success">Upload Story</button>
-    </form>
-    <hr>
-    {% else %}
-        <p>You must <a href="{{ url_for('login') }}">login</a> to upload stories.</p>
-    {% endif %}
-
+<div class="stories-container">
     {% if stories %}
-        <div class="story-list">
-            {% for story in stories %}
-                <div class="story-item mb-3">
-                    <img src="{{ story.image_url }}" alt="Story image" style="max-width: 100%; height: auto;">
-                    <p>{{ story.caption }}</p>
+        {% for story in stories %}
+        <div class="story-card">
+            <img src="{{ story.image_url }}" alt="Story image">
+            <div class="story-card-content">
+                <p>{{ story.caption }}</p>
+                {% if logged_in %}
+                <div class="story-actions">
+                    <a href="{{ url_for('edit_story', story_id=story.id) }}" class="edit-btn">Edit</a>
+                    <a href="{{ url_for('delete_story', story_id=story.id) }}" class="delete-btn" onclick="return confirm('Are you sure?')">Delete</a>
                 </div>
-            {% endfor %}
+                {% endif %}
+            </div>
         </div>
+        {% endfor %}
     {% else %}
         <p>No stories uploaded yet.</p>
     {% endif %}
 </div>
 {% endblock %}
+
 
 
 
