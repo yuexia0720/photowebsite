@@ -2,26 +2,27 @@ from flask import Flask, render_template, request, redirect, url_for, session
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
-import os
-from uuid import uuid4  # 用于给 story 生成唯一 ID
 
 app = Flask(__name__)
-app.secret_key = "xia0720"  # 用于 session 加密
+app.secret_key = "xia0720"  # Session 加密
 
-# 配置 Cloudinary
+# Cloudinary 配置
 cloudinary.config(
     cloud_name='dpr0pl2tf',
     api_key='548549517251566',
     api_secret='9o-PlPBRQzQPfuVCQfaGrUV3_IE'
 )
 
-# 管理员免登录秘钥
 ADMIN_SECRET = "superxia0720"
 
-# 统一前置处理，判断是否自动登录
+# 全局 Story 列表
+stories = []
+
+
+# 登录保护
 @app.before_request
 def auto_login_with_secret():
-    protected_paths = ["/upload", "/story"]
+    protected_paths = ["/upload", "/story", "/edit_story", "/delete_story"]
     path = request.path
 
     if any(path.startswith(p) for p in protected_paths):
@@ -34,42 +35,41 @@ def auto_login_with_secret():
         if path != "/login":
             return redirect(url_for("login"))
 
-# 登录页面
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-
         if username == "xia0720" and password == "qq123456":
             session["logged_in"] = True
             return redirect(url_for("story"))
         else:
             return "用户名或密码错误", 401
-
     return render_template("login.html", logged_in=session.get("logged_in", False))
 
-# 登出
+
 @app.route("/logout")
 def logout():
     session.pop("logged_in", None)
     return redirect(url_for("index"))
 
-# 首页
+
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index.html", logged_in=session.get("logged_in", False))
+
 
 @app.route("/gallery")
 def gallery():
-    return render_template("gallery.html")
+    return render_template("gallery.html", logged_in=session.get("logged_in", False))
 
-# About 页面
+
 @app.route("/about")
 def about():
-    return render_template("about.html")
+    return render_template("about.html", logged_in=session.get("logged_in", False))
 
-# Album 页面
+
 @app.route("/album")
 def albums():
     try:
@@ -84,7 +84,7 @@ def albums():
     except Exception as e:
         return f"Error fetching albums: {str(e)}"
 
-# 查看相册内容
+
 @app.route("/album/<album_name>")
 def view_album(album_name):
     try:
@@ -94,10 +94,7 @@ def view_album(album_name):
     except Exception as e:
         return f"Error loading album: {str(e)}"
 
-# Story 数据（仅保存在内存中）
-stories = []
 
-# Story 页面
 @app.route("/story", methods=["GET", "POST"])
 def story():
     global stories
@@ -109,26 +106,15 @@ def story():
             caption = request.form["caption"]
             upload_result = cloudinary.uploader.upload(image)
             image_url = upload_result["secure_url"]
-            stories.append({
-                "id": str(uuid4()),  # 唯一 ID
-                "image_url": image_url,
-                "caption": caption
-            })
+            stories.append({"id": len(stories) + 1, "image_url": image_url, "caption": caption})
             return redirect(url_for("story"))
         except Exception as e:
             return f"Upload error: {str(e)}"
 
     return render_template("story.html", stories=stories, logged_in=session.get("logged_in", False))
 
-# 删除 Story
-@app.route("/story/delete/<story_id>")
-def delete_story(story_id):
-    global stories
-    stories = [s for s in stories if s["id"] != story_id]
-    return redirect(url_for("story"))
 
-# 编辑 Story
-@app.route("/story/edit/<story_id>", methods=["GET", "POST"])
+@app.route("/edit_story/<int:story_id>", methods=["GET", "POST"])
 def edit_story(story_id):
     global stories
     story_item = next((s for s in stories if s["id"] == story_id), None)
@@ -141,7 +127,14 @@ def edit_story(story_id):
 
     return render_template("edit_story.html", story=story_item, logged_in=session.get("logged_in", False))
 
-# Upload 页面
+
+@app.route("/delete_story/<int:story_id>", methods=["POST"])
+def delete_story(story_id):
+    global stories
+    stories = [s for s in stories if s["id"] != story_id]
+    return redirect(url_for("story"))
+
+
 @app.route("/upload", methods=["GET", "POST"])
 def upload():
     if not session.get("logged_in"):
@@ -165,6 +158,7 @@ def upload():
             return f"Error uploading file: {str(e)}"
 
     return render_template("upload.html", logged_in=session.get("logged_in", False))
+
 
 if __name__ == "__main__":
     app.run(debug=True)
