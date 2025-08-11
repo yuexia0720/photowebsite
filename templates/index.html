@@ -1,11 +1,34 @@
 {% extends "base.html" %}
-{% block title %}Home - My Lens{% endblock %}
-
+{% block title %}My Lens{% endblock %}
 {% block content %}
-<div class="homepage">
-    <h1 class="main-title">My Lens</h1>
-    <div class="main-image-container">
-        <img src="https://res.cloudinary.com/dpr0pl2tf/image/upload/v1754513794/wbxrq1agsh7rzfsb07zn.jpg" alt="Homepage Image" class="main-image">
+<style>
+    .hero {
+        width: 100%;
+        height: 80vh;
+        background-image: url('https://res.cloudinary.com/dpr0pl2tf/image/upload/v1754513794/wbxrq1agsh7rzfsb07zn.jpg');
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+        font-size: 2rem;
+        text-align: center;
+    }
+    .hero h1 {
+        font-size: 3rem;
+        margin-bottom: 10px;
+    }
+    .hero p {
+        font-size: 1.2rem;
+    }
+</style>
+
+<div class="hero">
+    <div>
+        <h1>My Lens</h1>
+        <p>Capturing moments, telling stories.</p>
     </div>
 </div>
 {% endblock %}
