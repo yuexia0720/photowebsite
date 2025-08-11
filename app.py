@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, session, g
+from flask import Flask, render_template, request, redirect, url_for, session
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 import os
+from uuid import uuid4  # 用于给 story 生成唯一 ID
 
 app = Flask(__name__)
 app.secret_key = "xia0720"  # 用于 session 加密
@@ -14,7 +15,7 @@ cloudinary.config(
     api_secret='9o-PlPBRQzQPfuVCQfaGrUV3_IE'
 )
 
-# 管理员免登录秘钥（可改成复杂点）
+# 管理员免登录秘钥
 ADMIN_SECRET = "superxia0720"
 
 # 统一前置处理，判断是否自动登录
@@ -25,16 +26,11 @@ def auto_login_with_secret():
 
     if any(path.startswith(p) for p in protected_paths):
         if session.get("logged_in"):
-            # 已登录，放行
             return
-
-        # 尝试通过URL参数admin_key自动登录
         admin_key = request.args.get("admin_key")
         if admin_key and admin_key == ADMIN_SECRET:
             session["logged_in"] = True
             return
-
-        # 其余情况跳转登录页
         if path != "/login":
             return redirect(url_for("login"))
 
@@ -58,16 +54,10 @@ def login():
 def logout():
     session.pop("logged_in", None)
     return redirect(url_for("index"))
-    
+
 # 首页
 @app.route("/")
 def index():
-    # 这是你之前本地的首页图片代码，如果不需要可以改成下一行的return
-    # image_urls = [
-    #     "https://res.cloudinary.com/dpr0pl2tf/image/upload/v1753816843/WechatIMG2_mzsnw2.jpg",
-    # ]
-    # return render_template('index.html', image_urls=image_urls)
-    
     return render_template("index.html")
 
 @app.route("/gallery")
@@ -104,9 +94,10 @@ def view_album(album_name):
     except Exception as e:
         return f"Error loading album: {str(e)}"
 
-# Story 页面
+# Story 数据（仅保存在内存中）
 stories = []
 
+# Story 页面
 @app.route("/story", methods=["GET", "POST"])
 def story():
     global stories
@@ -118,12 +109,37 @@ def story():
             caption = request.form["caption"]
             upload_result = cloudinary.uploader.upload(image)
             image_url = upload_result["secure_url"]
-            stories.append({"image_url": image_url, "caption": caption})
+            stories.append({
+                "id": str(uuid4()),  # 唯一 ID
+                "image_url": image_url,
+                "caption": caption
+            })
             return redirect(url_for("story"))
         except Exception as e:
             return f"Upload error: {str(e)}"
 
     return render_template("story.html", stories=stories, logged_in=session.get("logged_in", False))
+
+# 删除 Story
+@app.route("/story/delete/<story_id>")
+def delete_story(story_id):
+    global stories
+    stories = [s for s in stories if s["id"] != story_id]
+    return redirect(url_for("story"))
+
+# 编辑 Story
+@app.route("/story/edit/<story_id>", methods=["GET", "POST"])
+def edit_story(story_id):
+    global stories
+    story_item = next((s for s in stories if s["id"] == story_id), None)
+    if not story_item:
+        return "Story not found", 404
+
+    if request.method == "POST":
+        story_item["caption"] = request.form["caption"]
+        return redirect(url_for("story"))
+
+    return render_template("edit_story.html", story=story_item, logged_in=session.get("logged_in", False))
 
 # Upload 页面
 @app.route("/upload", methods=["GET", "POST"])
@@ -150,6 +166,6 @@ def upload():
 
     return render_template("upload.html", logged_in=session.get("logged_in", False))
 
-
 if __name__ == "__main__":
     app.run(debug=True)
+
