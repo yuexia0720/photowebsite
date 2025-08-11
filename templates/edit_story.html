@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 30px auto; background: white; padding: 20px; border-radius: 8px;">
+    <h2>Edit Story</h2>
+    <form action="{{ url_for('edit_story', story_id=story.id) }}" method="POST" enctype="multipart/form-data">
+        <label for="caption">Caption:</label><br>
+        <textarea name="caption" id="caption" rows="3" style="width: 100%; margin-bottom: 15px;">{{ story.caption }}</textarea>
+
+        <label for="image">Change Image (optional):</label><br>
+        <input type="file" name="image" id="image" style="margin-bottom: 15px;"><br>
+
+        {% if story.image_url %}
+            <p>Current Image:</p>
+            <img src="{{ story.image_url }}" alt="Current Image" style="max-width: 100%; border-radius: 6px; margin-bottom: 15px;">
+        {% endif %}
+
+        <button type="submit" style="padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 4px;">Save Changes</button>
+        <a href="{{ url_for('story') }}" style="padding: 8px 16px; background: #6c757d; color: white; border-radius: 4px; text-decoration: none;">Cancel</a>
+    </form>
+</div>
+{% endblock %}
