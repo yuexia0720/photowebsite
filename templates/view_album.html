@@ -1,16 +1,14 @@
 {% extends "base.html" %}
+{% block title %}Album Content{% endblock %}
 {% block content %}
-  <h1>{{ folder }} Album</h1>
-  <div style="display: flex; flex-wrap: wrap; gap: 15px;">
-    {% for url in image_urls %}
-      <div>
-        <a href="{{ url }}" target="_blank">
-          <img src="{{ url }}" alt="Photo" style="width: 200px; height: auto;">
-        </a>
-      </div>
-    {% endfor %}
-  </div>
+<h1>{{ album_name }}</h1>
+<div style="display: flex; flex-wrap: wrap; gap: 10px;">
+  {% for img in image_urls %}
+    <img src="{{ img }}" style="width: 200px; height: 200px; object-fit: cover;">
+  {% endfor %}
+</div>
 {% endblock %}
+
 
 
 
